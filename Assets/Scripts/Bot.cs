@@ -153,15 +153,17 @@ public class Bot : MonoBehaviour
             cell.controller += 2;
             return;
         }
-        else if (cell.colliders[0].gameObject.layer == LayerMask.NameToLayer("food"))    // еда
-        {
-            cell.controller += 3;
-            return;
-        }
         else if (cell.colliders[0].gameObject.layer == LayerMask.NameToLayer("bot"))     // бот
         {
-            if (CheckRelations(cell)) cell.controller += 4;
-            else cell.controller += 5;
+            if (Registry.Instance.Get(cell.colliders[0].gameObject).Dead)
+            {
+                cell.controller += 3;
+            }
+            else
+            {
+                if (CheckRelations(cell)) cell.controller += 4;
+                else cell.controller += 5;
+            }
             return;
         }
 
@@ -193,33 +195,30 @@ public class Bot : MonoBehaviour
             cell.controller += 2;
             return;
         }
-        else if (cell.colliders[0].gameObject.layer == LayerMask.NameToLayer("food"))    // еда
-        {
-            cell.energy += LevelManager.Instance.Callories;
-            cell.controller += 3;
-            Registry.Instance.Kill(cell.colliders[0].gameObject);
-
-
-            cell.ChangeColor(1, -1, -1);
-
-            return;
-        }
         else if (cell.colliders[0].gameObject.layer == LayerMask.NameToLayer("bot"))     // бот
         {
-            if (CheckRelations(cell))
+            if (Registry.Instance.Get(cell.colliders[0].gameObject).Dead)
             {
-                cell.controller += 4;
                 cell.energy += LevelManager.Instance.Callories;
+                cell.controller += 3;
             }
             else
             {
-                cell.controller += 5;
-                cell.energy += LevelManager.Instance.Callories;
+                if (CheckRelations(cell))
+                {
+                    cell.controller += 4;
+                    cell.energy += LevelManager.Instance.Callories;
+                }
+                else
+                {
+                    cell.controller += 5;
+                    cell.energy += LevelManager.Instance.Callories;
+                }
             }
+
             Registry.Instance.Kill(cell.colliders[0].gameObject);
-
-
             cell.ChangeColor(1, -1, -1);
+
             return;
         }
     }
@@ -246,35 +245,30 @@ public class Bot : MonoBehaviour
         {
             cell.controller += 2;
             return;
-        }
-        else if (cell.colliders[0].gameObject.layer == LayerMask.NameToLayer("food"))    // еда
-        {
-            cell.energy += LevelManager.Instance.Callories;
-            cell.controller += 3;
-            Registry.Instance.Kill(cell.colliders[0].gameObject);
-
-            cell.transform.position = new Vector2(Mathf.Round(cell.sensor.position.x), Mathf.Round(cell.sensor.position.y));
-
-            cell.ChangeColor(1, -1, -1);
-            return;
-        }
+        } 
         else if (cell.colliders[0].gameObject.layer == LayerMask.NameToLayer("bot"))     // бот
         {
-            if (CheckRelations(cell))
+            if (Registry.Instance.Get(cell.colliders[0].gameObject).Dead)
             {
-                cell.controller += 4;
                 cell.energy += LevelManager.Instance.Callories;
+                cell.controller += 3;
             }
             else
             {
-                cell.controller += 5;
-                cell.energy += LevelManager.Instance.Callories;
+                if (CheckRelations(cell))
+                {
+                    cell.controller += 4;
+                    cell.energy += LevelManager.Instance.Callories;
+                }
+                else
+                {
+                    cell.controller += 5;
+                    cell.energy += LevelManager.Instance.Callories;
+                }
             }
+
             Registry.Instance.Kill(cell.colliders[0].gameObject);
-
             cell.transform.position = new Vector2(Mathf.Round(cell.sensor.position.x), Mathf.Round(cell.sensor.position.y));
-
-
             cell.ChangeColor(1, -1, -1);
             return;
         }

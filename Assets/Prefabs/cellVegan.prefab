@@ -306,7 +306,12 @@ MonoBehaviour:
   Color: {fileID: 21292012}
   colliders: []
   controller: 0
+  rot: 0
   Dead: 0
+  Inited: 0
+  AliveSprite: {fileID: 21300000, guid: ada5cdc03b69f10499765113256f4753, type: 3}
+  DeadSprite: {fileID: 21300000, guid: 79333f31f947ea842b51e6a419ec0ab4, type: 3}
+  DeadColor: {r: 0.5735294, g: 0.5735294, b: 0.5735294, a: 1}
 --- !u!212 &21292012
 SpriteRenderer:
   m_ObjectHideFlags: 1

@@ -29,7 +29,9 @@ public class DNA : MonoBehaviour
     [HideInInspector]
     public bool Inited = false;
 
-
+    public Sprite AliveSprite;
+    public Sprite DeadSprite;
+    public Color DeadColor;
     public void ChangeColor(float deltaR, float deltaG, float deltaB)
     {
         red = Mathf.Clamp01(red + deltaR);
@@ -40,7 +42,15 @@ public class DNA : MonoBehaviour
 
     public void UpdateColor()
     {
-        Color.color = new Color(red, green, blue);
+        if (!Dead)
+            Color.color = new Color(red, green, blue);
+    }
+
+    public void Die()
+    {
+        Color.sprite = DeadSprite;
+        Color.color = DeadColor;
+        Dead = true;
     }
 
 }

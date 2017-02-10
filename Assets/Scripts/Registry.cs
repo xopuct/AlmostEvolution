@@ -11,6 +11,7 @@ public class Registry : Singleton<Registry>
 
 
     Dictionary<int, GameObject> Corpses = new Dictionary<int, GameObject>();
+    Dictionary<int, DNA> CorpsesDNA = new Dictionary<int, DNA>();
 
     //HashSet<GameObject> Cells = new HashSet<GameObject>();
     //HashSet<GameObject> Corpses = new HashSet<GameObject>();
@@ -40,19 +41,20 @@ public class Registry : Singleton<Registry>
         {
             if (IsCell(deadmen))
             {
-                CellsDNA[deadmen.GetInstanceID()].Dead = true;
-                MakeCorpse(deadmen.transform.position, deadmen.transform.rotation);
+                MakeCorpse(CellsDNA[deadmen.GetInstanceID()]);
+                CellsDNA.Remove(deadmen.GetInstanceID());
+                CellsObject.Remove(deadmen.GetInstanceID());
             }
-            Remove(deadmen);
+            else
+                Remove(deadmen);
         }
     }
 
-    public void MakeCorpse(Vector2 position, Quaternion rotation)
+    public void MakeCorpse(DNA dna)
     {
-        //var corpse = GameObjectPool.Instance.Instantiate(DeadCell, ValidatePos(position), rotation);
-        var corpse = (GameObject)Instantiate(DeadCell, ValidatePos(position), rotation);
-
-        Corpses[corpse.GetInstanceID()] = corpse;
+        dna.Die();
+        Corpses[dna.gameObject.GetInstanceID()] = dna.gameObject;
+        CorpsesDNA[dna.gameObject.GetInstanceID()] = dna;
     }
 
     public void Remove(GameObject bot)
@@ -63,6 +65,7 @@ public class Registry : Singleton<Registry>
             removeResult = removeResult || CellsObject.Remove(bot.GetInstanceID());
             removeResult = removeResult || CellsDNA.Remove(bot.GetInstanceID());
             removeResult = removeResult || Corpses.Remove(bot.GetInstanceID());
+            removeResult = removeResult || CorpsesDNA.Remove(bot.GetInstanceID());
 
             if (removeResult)
                 Destroy(bot.gameObject);
@@ -86,8 +89,8 @@ public class Registry : Singleton<Registry>
             DNA result;
             if (CellsDNA.TryGetValue(cellObj.GetInstanceID(), out result))
                 return result;
-            else
-                return null;
+            else if(CorpsesDNA.TryGetValue(cellObj.GetInstanceID(), out result))
+                return result;
         }
         return null;
     }
