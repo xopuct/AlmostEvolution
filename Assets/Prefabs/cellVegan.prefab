@@ -9,7 +9,7 @@ GameObject:
   m_Component:
   - 4: {fileID: 484388}
   m_Layer: 11
-  m_Name: Sensor (6)
+  m_Name: Sensor 90
   m_TagString: Untagged
   m_Icon: {fileID: 1638116407661442457, guid: 0000000000000000d000000000000000, type: 0}
   m_NavMeshLayer: 0
@@ -42,7 +42,7 @@ GameObject:
   m_Component:
   - 4: {fileID: 473482}
   m_Layer: 11
-  m_Name: Sensor (3)
+  m_Name: Sensor 225
   m_TagString: Untagged
   m_Icon: {fileID: 1638116407661442457, guid: 0000000000000000d000000000000000, type: 0}
   m_NavMeshLayer: 0
@@ -57,7 +57,7 @@ GameObject:
   m_Component:
   - 4: {fileID: 487802}
   m_Layer: 11
-  m_Name: Sensor
+  m_Name: Sensor 0
   m_TagString: Untagged
   m_Icon: {fileID: 1638116407661442457, guid: 0000000000000000d000000000000000, type: 0}
   m_NavMeshLayer: 0
@@ -72,7 +72,7 @@ GameObject:
   m_Component:
   - 4: {fileID: 469170}
   m_Layer: 11
-  m_Name: Sensor (2)
+  m_Name: Sensor 270
   m_TagString: Untagged
   m_Icon: {fileID: 1638116407661442457, guid: 0000000000000000d000000000000000, type: 0}
   m_NavMeshLayer: 0
@@ -87,7 +87,7 @@ GameObject:
   m_Component:
   - 4: {fileID: 466274}
   m_Layer: 11
-  m_Name: Sensor (7)
+  m_Name: Sensor 45
   m_TagString: Untagged
   m_Icon: {fileID: 1638116407661442457, guid: 0000000000000000d000000000000000, type: 0}
   m_NavMeshLayer: 0
@@ -102,7 +102,7 @@ GameObject:
   m_Component:
   - 4: {fileID: 415722}
   m_Layer: 11
-  m_Name: Sensor (1)
+  m_Name: Sensor 315
   m_TagString: Untagged
   m_Icon: {fileID: 1638116407661442457, guid: 0000000000000000d000000000000000, type: 0}
   m_NavMeshLayer: 0
@@ -117,7 +117,7 @@ GameObject:
   m_Component:
   - 4: {fileID: 450630}
   m_Layer: 11
-  m_Name: Sensor (5)
+  m_Name: Sensor 135
   m_TagString: Untagged
   m_Icon: {fileID: 1638116407661442457, guid: 0000000000000000d000000000000000, type: 0}
   m_NavMeshLayer: 0
@@ -132,7 +132,7 @@ GameObject:
   m_Component:
   - 4: {fileID: 446940}
   m_Layer: 11
-  m_Name: Sensor (4)
+  m_Name: Sensor 180
   m_TagString: Untagged
   m_Icon: {fileID: 1638116407661442457, guid: 0000000000000000d000000000000000, type: 0}
   m_NavMeshLayer: 0
@@ -210,7 +210,7 @@ Transform:
   m_PrefabInternal: {fileID: 100100000}
   m_GameObject: {fileID: 119604}
   m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
-  m_LocalPosition: {x: 50, y: 55, z: 0}
+  m_LocalPosition: {x: 0, y: 0, z: 0}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
   m_Children:
@@ -289,15 +289,16 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   sensors:
-  - {fileID: 466274}
-  - {fileID: 473482}
-  - {fileID: 446940}
-  - {fileID: 415722}
-  - {fileID: 484388}
-  - {fileID: 469170}
-  - {fileID: 450630}
   - {fileID: 487802}
-  sensor: {fileID: 487802}
+  - {fileID: 466274}
+  - {fileID: 484388}
+  - {fileID: 450630}
+  - {fileID: 446940}
+  - {fileID: 473482}
+  - {fileID: 469170}
+  - {fileID: 415722}
+  Obstacle: {fileID: 0}
+  ObstaclePos: {x: 0, y: 0, z: 0}
   genome: 0a0000000a0000000a0000000a0000000a0000000a0000000a0000000a0000000a0000000a0000000a0000000a0000000a0000000a0000000a0000000a0000000a0000000a0000000a0000000a0000000a0000000a0000000a0000000a0000000a0000000a0000000a0000000a0000000a0000000a0000000a0000000a0000000a0000000a0000000a0000000a0000000a0000000a0000000a0000000a0000000a0000000a0000000a0000000a0000000a0000000a0000000a0000000a0000000a0000000a0000000a0000000a0000000a0000000a0000000a0000000a0000000a0000000a0000000a0000000a0000000a0000000a0000000a0000000a000000
   energy: 0
   red: 0

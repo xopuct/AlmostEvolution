@@ -29,7 +29,6 @@ public class Bot : MonoBehaviour
         //genome[i] = 10;
         //}
 
-        cell.sensor = cell.sensors[0];
         cell.Inited = true;
     }
 
@@ -173,8 +172,8 @@ public class Bot : MonoBehaviour
     void Turn(DNA cell)
     {
         cell.rot += 45 * cell.genome[cell.controller];
-        if (cell.rot > 360) cell.rot -= 360;
-        cell.transform.rotation = Quaternion.Euler(0, 0, cell.rot);
+        if (cell.rot >= 360) cell.rot -= 360;
+        // cell.transform.rotation = Quaternion.Euler(0, 0, cell.rot);
         cell.controller++;
     }
 
@@ -246,7 +245,7 @@ public class Bot : MonoBehaviour
         {
             cell.controller += 2;
             return;
-        } 
+        }
         else if (cell.colliders[0].gameObject.layer == LayerMask.NameToLayer("bot"))     // бот
         {
             if (Registry.Instance.Get(cell.colliders[0].gameObject).Dead)

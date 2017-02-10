@@ -6,7 +6,15 @@ using UnityEngine;
 public class DNA : MonoBehaviour
 {
     public Transform[] sensors;
-    public Transform sensor;
+    public Transform sensor
+    {
+        get
+        {
+            var index = (int)(rot / 45);
+            return sensors[index];
+        }
+
+    }
 
     public Collider2D Obstacle;
     public Vector3 ObstaclePos;
