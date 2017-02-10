@@ -352,6 +352,7 @@ GameObject:
   - 114: {fileID: 626383792}
   - 114: {fileID: 626383794}
   - 114: {fileID: 626383795}
+  - 114: {fileID: 626383796}
   m_Layer: 0
   m_Name: LevelManager
   m_TagString: Untagged
@@ -426,6 +427,17 @@ MonoBehaviour:
   bot:
     serializedVersion: 2
     m_Bits: 2048
+--- !u!114 &626383796
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_PrefabParentObject: {fileID: 0}
+  m_PrefabInternal: {fileID: 0}
+  m_GameObject: {fileID: 626383791}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: aa0c2fdfd142c0647a6a40dd7608392e, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
 --- !u!1 &808729390
 GameObject:
   m_ObjectHideFlags: 0

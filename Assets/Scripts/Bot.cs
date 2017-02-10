@@ -37,6 +37,7 @@ public class Bot : MonoBehaviour
     public void Step(DNA cell)
     {
         cell.colliders = Physics2D.OverlapCircleAll(cell.sensor.position, 0.1f);
+        cell.colliders = System.Array.FindAll(cell.colliders, c => c.gameObject != cell.gameObject);
 
         //Profiler.BeginSample("Get neighbor");
         //colliders = Registry.Instance.GetInRadius(sensor.position, 0.1f);

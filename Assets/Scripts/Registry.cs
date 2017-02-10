@@ -89,7 +89,7 @@ public class Registry : Singleton<Registry>
             DNA result;
             if (CellsDNA.TryGetValue(cellObj.GetInstanceID(), out result))
                 return result;
-            else if(CorpsesDNA.TryGetValue(cellObj.GetInstanceID(), out result))
+            else if (CorpsesDNA.TryGetValue(cellObj.GetInstanceID(), out result))
                 return result;
         }
         return null;
@@ -108,6 +108,11 @@ public class Registry : Singleton<Registry>
     public IEnumerable<DNA> GetAllCellsDNA()
     {
         return new List<DNA>(CellsDNA.Values);
+    }
+
+    public IEnumerable<DNA> GetAllCorpsesDNA()
+    {
+        return new List<DNA>(CorpsesDNA.Values);
     }
 
     //List<GameObject> GetInRadius(Vector3 position, float radius, Dictionary<int, GameObject> dict)
