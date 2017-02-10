@@ -8,6 +8,8 @@ public class DNA : MonoBehaviour
     public Transform[] sensors;
     public Transform sensor;
 
+    public Collider2D Obstacle;
+    public Vector3 ObstaclePos;
     [Space()]
     public int[] genome;
     public int energy;
