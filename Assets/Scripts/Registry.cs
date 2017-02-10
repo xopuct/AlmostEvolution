@@ -1,11 +1,15 @@
 ﻿using UnityEngine;
 using System.Collections.Generic;
+using System;
 
 public class Registry : Singleton<Registry>
 {
     public GameObject DeadCell;
 
-    Dictionary<int, GameObject> Cells = new Dictionary<int, GameObject>();
+    Dictionary<int, GameObject> CellsObject = new Dictionary<int, GameObject>();
+    Dictionary<int, DNA> CellsDNA = new Dictionary<int, DNA>();
+
+
     Dictionary<int, GameObject> Corpses = new Dictionary<int, GameObject>();
 
     //HashSet<GameObject> Cells = new HashSet<GameObject>();
@@ -16,14 +20,17 @@ public class Registry : Singleton<Registry>
         return new Vector2(Mathf.Round(position.x), Mathf.Round(position.y));
     }
 
-    public GameObject Add(Vector3 position, Quaternion rotation, Bot prefab)
+    public GameObject Add(Vector3 position, Quaternion rotation, DNA prefab)
     {
         //var inst = GameObjectPool.Instance.Instantiate(prefab.gameObject, ValidatePos(position), rotation);
         //inst.GetComponent<Bot>().Copy(prefab);
         var inst = (GameObject)Instantiate(prefab.gameObject, ValidatePos(position), rotation);
 
 
-        Cells[inst.GetInstanceID()] = inst;
+        CellsObject[inst.GetInstanceID()] = inst;
+        CellsDNA[inst.GetInstanceID()] = inst.GetComponent<DNA>();
+        CellsDNA[inst.GetInstanceID()].Inited = false;
+        CellsDNA[inst.GetInstanceID()].Dead = false;
         return inst;
     }
 
@@ -32,7 +39,10 @@ public class Registry : Singleton<Registry>
         if (deadmen)
         {
             if (IsCell(deadmen))
+            {
+                CellsDNA[deadmen.GetInstanceID()].Dead = true;
                 MakeCorpse(deadmen.transform.position, deadmen.transform.rotation);
+            }
             Remove(deadmen);
         }
     }
@@ -49,10 +59,13 @@ public class Registry : Singleton<Registry>
     {
         if (bot)
         {
-            Cells.Remove(bot.GetInstanceID());
-            Corpses.Remove(bot.GetInstanceID());
+            var removeResult = false;
+            removeResult = removeResult || CellsObject.Remove(bot.GetInstanceID());
+            removeResult = removeResult || CellsDNA.Remove(bot.GetInstanceID());
+            removeResult = removeResult || Corpses.Remove(bot.GetInstanceID());
 
-            Destroy(bot.gameObject);
+            if (removeResult)
+                Destroy(bot.gameObject);
             //GameObjectPool.Instance.Destroy(bot.gameObject);
         }
     }
@@ -63,16 +76,21 @@ public class Registry : Singleton<Registry>
 
     public int GetCellsCount()
     {
-        return Cells.Count;
+        return CellsObject.Count;
     }
-    //public Bot Get(int id)
-    //{
-    //    Bot bot;
-    //    if (Cells.TryGetValue(id, out bot))
-    //        return bot;
-    //    else
-    //        return null;
-    //}
+
+    public DNA Get(GameObject cellObj)
+    {
+        if (cellObj)
+        {
+            DNA result;
+            if (CellsDNA.TryGetValue(cellObj.GetInstanceID(), out result))
+                return result;
+            else
+                return null;
+        }
+        return null;
+    }
 
     public bool IsCorpse(GameObject obj)
     {
@@ -81,7 +99,12 @@ public class Registry : Singleton<Registry>
 
     public bool IsCell(GameObject obj)
     {
-        return Cells.ContainsKey(obj.GetInstanceID());
+        return CellsObject.ContainsKey(obj.GetInstanceID());
+    }
+
+    public IEnumerable<DNA> GetAllCellsDNA()
+    {
+        return new List<DNA>(CellsDNA.Values);
     }
 
     //List<GameObject> GetInRadius(Vector3 position, float radius, Dictionary<int, GameObject> dict)

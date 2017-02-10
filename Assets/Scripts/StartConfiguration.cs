@@ -16,7 +16,7 @@ public class StartConfiguration : MonoBehaviour
     public struct Slot
     {
         public Vector2 Position;
-        public Bot Cell;
+        public DNA Cell;
     }
 
     public List<Slot> Slots;

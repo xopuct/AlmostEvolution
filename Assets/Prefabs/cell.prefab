@@ -85,7 +85,7 @@ GameObject:
   - 4: {fileID: 456950}
   - 212: {fileID: 21242814}
   - 58: {fileID: 5836240}
-  - 114: {fileID: 11421278}
+  - 114: {fileID: 11461056}
   m_Layer: 11
   m_Name: cell
   m_TagString: Untagged
@@ -277,7 +277,7 @@ CircleCollider2D:
   m_Offset: {x: 0, y: 0}
   serializedVersion: 2
   m_Radius: 0.4
---- !u!114 &11421278
+--- !u!114 &11461056
 MonoBehaviour:
   m_ObjectHideFlags: 1
   m_PrefabParentObject: {fileID: 0}
@@ -285,39 +285,28 @@ MonoBehaviour:
   m_GameObject: {fileID: 172530}
   m_Enabled: 1
   m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: dd33f90a0156f194caf95b1bcde57fdc, type: 3}
+  m_Script: {fileID: 11500000, guid: 4ed5956be1ba1284eb0a09daece3a30b, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
   sensors:
-  - {fileID: 498124}
   - {fileID: 401966}
-  - {fileID: 468066}
-  - {fileID: 423818}
-  - {fileID: 454000}
-  - {fileID: 449590}
-  - {fileID: 449678}
   - {fileID: 412220}
-  side:
-    serializedVersion: 2
-    m_Bits: 256
-  wall:
-    serializedVersion: 2
-    m_Bits: 512
-  food:
-    serializedVersion: 2
-    m_Bits: 1024
-  bot:
-    serializedVersion: 2
-    m_Bits: 2048
-  colliders: []
+  - {fileID: 423818}
+  - {fileID: 498124}
+  - {fileID: 449590}
+  - {fileID: 454000}
+  - {fileID: 468066}
+  - {fileID: 449678}
+  sensor: {fileID: 498124}
   genome: 0a0000000a0000000a0000000a0000000a0000000a0000000a0000000a0000000a0000000a0000000a0000000a0000000a0000000a0000000a0000000a0000000a0000000a0000000a0000000a0000000a0000000a0000000a0000000a0000000a0000000a0000000a0000000c0000000a0000000a0000000a0000000a0000000a0000000a0000000a0000000a0000000a0000000a0000000a0000000a0000000a0000000a0000000a0000000a0000000a0000000a0000000a0000000a0000000a0000000a0000000a0000000a0000000a0000000a0000000a0000000a0000000a0000000a0000000a0000000a0000000a0000000a0000000a0000000a000000
-  energy: 100
-  controller: 0
-  red: 1
-  green: 1
+  energy: 0
+  red: 0
+  green: 0
   blue: 1
-  deadCell: {fileID: 173360, guid: 6b6f9dc3dfa172647b75284c5dc74c24, type: 2}
-  Color: {fileID: 0}
+  Color: {fileID: 21242814}
+  colliders: []
+  controller: 0
+  Dead: 0
 --- !u!212 &21242814
 SpriteRenderer:
   m_ObjectHideFlags: 1
@@ -327,20 +316,17 @@ SpriteRenderer:
   m_Enabled: 1
   m_CastShadows: 0
   m_ReceiveShadows: 0
-  m_MotionVectors: 1
-  m_LightProbeUsage: 0
-  m_ReflectionProbeUsage: 0
   m_Materials:
   - {fileID: 2100000, guid: b21a9236b057fc94aa61a32d340e35ed, type: 2}
   m_SubsetIndices: 
   m_StaticBatchRoot: {fileID: 0}
+  m_UseLightProbes: 0
+  m_ReflectionProbeUsage: 0
   m_ProbeAnchor: {fileID: 0}
-  m_LightProbeVolumeOverride: {fileID: 0}
   m_ScaleInLightmap: 1
   m_PreserveUVs: 0
   m_IgnoreNormalsForChartDetection: 0
   m_ImportantGI: 0
-  m_SelectedWireframeHidden: 1
   m_MinimumChartSize: 4
   m_AutoUVMaxDistance: 0.5
   m_AutoUVMaxAngle: 89

@@ -4,370 +4,319 @@ using System.Collections.Generic;
 using Random = UnityEngine.Random;
 public class Bot : MonoBehaviour
 {
-
-    public Transform[] sensors;
-    private Transform sensor;
-
     public LayerMask side;
     public LayerMask wall;
     public LayerMask food;
     public LayerMask bot;
-    public Collider2D[] colliders;
-    [Space()]
-    public int[] genome;
-    public int energy;
-    [Space()]
-    public int controller;
-    [Space()]
-    public float red;
-    public float green;
-    public float blue;
-    private float rot;
 
-    public GameObject deadCell;
-    public SpriteRenderer Color;
-
-    public int Id { get { return GetInstanceID(); } }
 
     // Use this for initialization
-    void Start()
+    void InitCell(DNA cell)
     {
         //genome = new int[64];
-        controller = 0;
-        if (LevelManager.Instance.StartEnergy > 0) energy = LevelManager.Instance.StartEnergy;
+        cell.controller = 0;
+        if (LevelManager.Instance.StartEnergy > 0) cell.energy = LevelManager.Instance.StartEnergy;
         if (Random.Range(0, 3) == 1)
         {
             LevelManager.Instance.mutations++;
-            genome[Random.Range(0, 63)] = Random.Range(0, 63);
+            cell.genome[Random.Range(0, 63)] = Random.Range(0, 63);
         }
-        ChangeColor();
+        cell.UpdateColor();
 
-        for (int i = 0; i < genome.Length; i++)
-        {
-            //genome[i] = Random.Range(0,63);
-            //genome[i] = 10;
-        }
+        //for (int i = 0; i < cell.genome.Length; i++)
+        //{
+        //genome[i] = Random.Range(0,63);
+        //genome[i] = 10;
+        //}
 
-        sensor = sensors[0];
+        cell.sensor = cell.sensors[0];
+        cell.Inited = true;
     }
 
-    public void ChangeColor()
-    {
-        Color.color = new Color(red, green, blue);
-    }
 
-    public void Step()
+    public void Step(DNA cell)
     {
-        colliders = Physics2D.OverlapCircleAll(sensor.position, 0.1f);
+        cell.colliders = Physics2D.OverlapCircleAll(cell.sensor.position, 0.1f);
 
         //Profiler.BeginSample("Get neighbor");
         //colliders = Registry.Instance.GetInRadius(sensor.position, 0.1f);
         //Profiler.EndSample();
-        if (controller > 63) controller -= 64;
+        if (cell.controller > 63) cell.controller -= 64;
 
-        energy--;
+        cell.energy--;
 
-        if (energy > LevelManager.Instance.EnergyToDivide)
+        if (cell.energy > LevelManager.Instance.EnergyToDivide)
         {
-            TryToDivide();
+            TryToDivide(cell);
         }
-        if (energy <= 0)
+        if (cell.energy <= 0)
         {
-            Registry.Instance.Kill(gameObject);
+            Registry.Instance.Kill(cell.gameObject);
             return;
             //Debug.Log("starved");
         }
         // смотрит
-        if (genome[controller] == 0)
+        if (cell.genome[cell.controller] == 0)
         {
             Profiler.BeginSample("Look");
-            Look();
+            Look(cell);
             Profiler.EndSample();
             return;
         }
         // поворачивается
-        else if (genome[controller] > 0 && genome[controller] < 8)
+        else if (cell.genome[cell.controller] > 0 && cell.genome[cell.controller] < 8)
         {
-            Turn();
+            Turn(cell);
             return;
         }
         // жрёт
-        else if (genome[controller] == 8)
+        else if (cell.genome[cell.controller] == 8)
         {
             Profiler.BeginSample("Look");
-            Eat();
+            Eat(cell);
             Profiler.EndSample();
             return;
         }
         // жрёт
-        else if (genome[controller] == 9)
+        else if (cell.genome[cell.controller] == 9)
         {
             Profiler.BeginSample("Move");
-            Move();
+            Move(cell);
             Profiler.EndSample();
 
             return;
         }
         // фотосинтез
-        else if (genome[controller] == 10)
+        else if (cell.genome[cell.controller] == 10)
         {
-            Synth();
+            Synth(cell);
             return;
         }
         // проверяет здоровье
-        else if (genome[controller] == 11)
+        else if (cell.genome[cell.controller] == 11)
         {
-            CheckEnergy();
+            CheckEnergy(cell);
             return;
         }
         // рожает
-        else if (genome[controller] == 12)
+        else if (cell.genome[cell.controller] == 12)
         {
-            if (energy > LevelManager.Instance.EnergyToDivide)
+            if (cell.energy > LevelManager.Instance.EnergyToDivide)
             {
-                TryToDivide();
+                TryToDivide(cell);
                 return;
             }
         }
         // переход
-        else if (genome[controller] > 12)
+        else if (cell.genome[cell.controller] > 12)
         {
-            controller += genome[controller];
+            cell.controller += cell.genome[cell.controller];
             return;
         }
 
     }
 
-    void TryToDivide()
+    void TryToDivide(DNA cell)
     {
-        for (int i = sensors.Length - 1; i >= 0; i--)
+        for (int i = cell.sensors.Length - 1; i >= 0; i--)
         {
-            if (Physics2D.OverlapCircleAll(sensors[i].position, 0.1f).Length == 0)
+            if (Physics2D.OverlapCircleAll(cell.sensors[i].position, 0.1f).Length == 0)
             {
-                Divide(sensors[i]);
+                Divide(cell, cell.sensors[i]);
                 return;
             }
         }
-        Die();
+        Die(cell);
     }
 
-    void Divide(Transform tr)
+    void Divide(DNA cell, Transform dividePoint)
     {
-        Registry.Instance.Add(tr.position, tr.rotation, this);
-        energy /= 2;
+        Registry.Instance.Add(dividePoint.position, dividePoint.rotation, cell);
+        cell.energy /= 2;
     }
 
-    void Look()
+    void Look(DNA cell)
     {
-        if (colliders.Length == 0)                                                  // Пусто
+        if (cell.colliders.Length == 0)                                                  // Пусто
         {
-            controller++;
+            cell.controller++;
             return;
         }
 
-        if (colliders[0].gameObject.layer == LayerMask.NameToLayer("side"))         // Край
+        if (cell.colliders[0].gameObject.layer == LayerMask.NameToLayer("side"))         // Край
         {
-            controller++;
+            cell.controller++;
             return;
         }
-        else if (colliders[0].gameObject.layer == LayerMask.NameToLayer("wall"))    // стена
+        else if (cell.colliders[0].gameObject.layer == LayerMask.NameToLayer("wall"))    // стена
         {
-            controller += 2;
+            cell.controller += 2;
             return;
         }
-        else if (colliders[0].gameObject.layer == LayerMask.NameToLayer("food"))    // еда
+        else if (cell.colliders[0].gameObject.layer == LayerMask.NameToLayer("food"))    // еда
         {
-            controller += 3;
+            cell.controller += 3;
             return;
         }
-        else if (colliders[0].gameObject.layer == LayerMask.NameToLayer("bot"))     // бот
+        else if (cell.colliders[0].gameObject.layer == LayerMask.NameToLayer("bot"))     // бот
         {
-            if (CheckRelations()) controller += 4;
-            else controller += 5;
+            if (CheckRelations(cell)) cell.controller += 4;
+            else cell.controller += 5;
             return;
         }
 
     }
 
-    void Turn()
+    void Turn(DNA cell)
     {
-        rot += 45 * genome[controller];
-        if (rot > 360) rot -= 360;
-        transform.rotation = Quaternion.Euler(0, 0, rot);
-        controller++;
+        cell.rot += 45 * cell.genome[cell.controller];
+        if (cell.rot > 360) cell.rot -= 360;
+        cell.transform.rotation = Quaternion.Euler(0, 0, cell.rot);
+        cell.controller++;
     }
 
-    void Eat()
+    void Eat(DNA cell)
     {
-        if (colliders.Length == 0)                                                  // Пусто
+        if (cell.colliders.Length == 0)                                                  // Пусто
         {
-            controller++;
+            cell.controller++;
             return;
         }
 
-        if (colliders[0].gameObject.layer == LayerMask.NameToLayer("side"))         // Край
+        if (cell.colliders[0].gameObject.layer == LayerMask.NameToLayer("side"))         // Край
         {
-            controller++;
+            cell.controller++;
             return;
         }
-        else if (colliders[0].gameObject.layer == LayerMask.NameToLayer("wall"))    // стена
+        else if (cell.colliders[0].gameObject.layer == LayerMask.NameToLayer("wall"))    // стена
         {
-            controller += 2;
+            cell.controller += 2;
             return;
         }
-        else if (colliders[0].gameObject.layer == LayerMask.NameToLayer("food"))    // еда
+        else if (cell.colliders[0].gameObject.layer == LayerMask.NameToLayer("food"))    // еда
         {
-            energy += LevelManager.Instance.Callories;
-            controller += 3;
-            Registry.Instance.Kill(colliders[0].gameObject);
+            cell.energy += LevelManager.Instance.Callories;
+            cell.controller += 3;
+            Registry.Instance.Kill(cell.colliders[0].gameObject);
 
-            red += 1f;
-            if (red > 1) red = 1;
-            green -= 1f;
-            if (green < 0) green = 0;
-            blue -= 1f;
-            if (blue < 0) blue = 0;
-            ChangeColor();
+
+            cell.ChangeColor(1, -1, -1);
 
             return;
         }
-        else if (colliders[0].gameObject.layer == LayerMask.NameToLayer("bot"))     // бот
+        else if (cell.colliders[0].gameObject.layer == LayerMask.NameToLayer("bot"))     // бот
         {
-            if (CheckRelations())
+            if (CheckRelations(cell))
             {
-                controller += 4;
-                energy += LevelManager.Instance.Callories;
+                cell.controller += 4;
+                cell.energy += LevelManager.Instance.Callories;
             }
             else
             {
-                controller += 5;
-                energy += LevelManager.Instance.Callories;
+                cell.controller += 5;
+                cell.energy += LevelManager.Instance.Callories;
             }
-            Registry.Instance.Kill(colliders[0].gameObject);
+            Registry.Instance.Kill(cell.colliders[0].gameObject);
 
-            red += 1f;
-            if (red > 1) red = 1;
-            green -= 1f;
-            if (green < 0) green = 0;
-            blue -= 1f;
-            if (blue < 0) blue = 0;
-            ChangeColor();
+
+            cell.ChangeColor(1, -1, -1);
             return;
         }
-
     }
 
-    void Move()
+    void Move(DNA cell)
     {
-        if (colliders.Length == 0)                                                  // Пусто
+        if (cell.colliders.Length == 0)                                                  // Пусто
         {
-            transform.position = new Vector2(Mathf.Round(sensor.position.x), Mathf.Round(sensor.position.y));
-            controller++;
+            cell.transform.position = new Vector2(Mathf.Round(cell.sensor.position.x), Mathf.Round(cell.sensor.position.y));
+            cell.controller++;
             return;
         }
 
-        if (colliders[0].gameObject.layer == LayerMask.NameToLayer("side"))         // Край
+        if (cell.colliders[0].gameObject.layer == LayerMask.NameToLayer("side"))         // Край
         {
-            float newx = Mathf.Round(sensor.position.x);
+            float newx = Mathf.Round(cell.sensor.position.x);
             if (newx < 0) newx = 99;
             if (newx > 99) newx = 0;
-            transform.position = new Vector2(newx, Mathf.Round(sensor.position.y));
-            controller++;
+            cell.transform.position = new Vector2(newx, Mathf.Round(cell.sensor.position.y));
+            cell.controller++;
             return;
         }
-        else if (colliders[0].gameObject.layer == LayerMask.NameToLayer("wall"))    // стена
+        else if (cell.colliders[0].gameObject.layer == LayerMask.NameToLayer("wall"))    // стена
         {
-            controller += 2;
+            cell.controller += 2;
             return;
         }
-        else if (colliders[0].gameObject.layer == LayerMask.NameToLayer("food"))    // еда
+        else if (cell.colliders[0].gameObject.layer == LayerMask.NameToLayer("food"))    // еда
         {
-            energy += LevelManager.Instance.Callories;
-            controller += 3;
-            Registry.Instance.Kill(colliders[0].gameObject);
+            cell.energy += LevelManager.Instance.Callories;
+            cell.controller += 3;
+            Registry.Instance.Kill(cell.colliders[0].gameObject);
 
-            transform.position = new Vector2(Mathf.Round(sensor.position.x), Mathf.Round(sensor.position.y));
+            cell.transform.position = new Vector2(Mathf.Round(cell.sensor.position.x), Mathf.Round(cell.sensor.position.y));
 
-            red += 1f;
-            if (red > 1) red = 1;
-            green -= 1f;
-            if (green < 0) green = 0;
-            blue -= 1f;
-            if (blue < 0) blue = 0;
-            ChangeColor();
+            cell.ChangeColor(1, -1, -1);
             return;
         }
-        else if (colliders[0].gameObject.layer == LayerMask.NameToLayer("bot"))     // бот
+        else if (cell.colliders[0].gameObject.layer == LayerMask.NameToLayer("bot"))     // бот
         {
-            if (CheckRelations())
+            if (CheckRelations(cell))
             {
-                controller += 4;
-                energy += LevelManager.Instance.Callories;
+                cell.controller += 4;
+                cell.energy += LevelManager.Instance.Callories;
             }
             else
             {
-                controller += 5;
-                energy += LevelManager.Instance.Callories;
+                cell.controller += 5;
+                cell.energy += LevelManager.Instance.Callories;
             }
-            Registry.Instance.Kill(colliders[0].gameObject);
+            Registry.Instance.Kill(cell.colliders[0].gameObject);
 
-            transform.position = new Vector2(Mathf.Round(sensor.position.x), Mathf.Round(sensor.position.y));
+            cell.transform.position = new Vector2(Mathf.Round(cell.sensor.position.x), Mathf.Round(cell.sensor.position.y));
 
-            red += 1f;
-            if (red > 1) red = 1;
-            green -= 1f;
-            if (green < 0) green = 0;
-            blue -= 1f;
-            if (blue < 0) blue = 0;
-            ChangeColor();
+
+            cell.ChangeColor(1, -1, -1);
             return;
         }
 
     }
 
-    void Synth()
+    void Synth(DNA cell)
     {
-        energy += (int)Mathf.Round(transform.position.y * LevelManager.Instance.SynthMultipler);
-        controller++;
+        cell.energy += (int)Mathf.Round(cell.transform.position.y * LevelManager.Instance.SynthMultipler);
+        cell.controller++;
 
-
-        green += 0.1f;
-        if (green > 1) green = 1;
-        blue -= 0.1f;
-        if (blue < 0) blue = 0;
-        red -= 0.1f;
-        if (red < 0) red = 0;
-        ChangeColor();
+        cell.ChangeColor(-0.1f, 0.1f, -0.1f);
     }
 
-    void CheckEnergy()
+    void CheckEnergy(DNA cell)
     {
-        int cnt = controller + 1;
+        int cnt = cell.controller + 1;
         if (cnt > 63) cnt -= 64;
-        if (energy < genome[cnt] * 15)
+        if (cell.energy < cell.genome[cnt] * 15)
         {
-            controller += 2;
+            cell.controller += 2;
         }
-        if (energy >= genome[cnt] * 15)
+        if (cell.energy >= cell.genome[cnt] * 15)
         {
-            controller += 3;
+            cell.controller += 3;
         }
     }
 
-    public void Die()
+    public void Die(DNA cell)
     {
-        Registry.Instance.Kill(gameObject);
+        Registry.Instance.Kill(cell.gameObject);
     }
 
-    bool CheckRelations()
+    bool CheckRelations(DNA cell)
     {
         int dismatches = 0;
 
-        for (int i = 0; i < genome.Length; i++)
+        for (int i = 0; i < cell.genome.Length; i++)
         {
             if (dismatches < 2)
             {
-                if (genome[i] != colliders[0].GetComponent<Bot>().genome[i]) dismatches++;
+                if (cell.genome[i] != cell.colliders[0].GetComponent<DNA>().genome[i]) dismatches++;
             }
             else return false;
         }
@@ -376,6 +325,15 @@ public class Bot : MonoBehaviour
 
     void Update()
     {
-        Step();
+        foreach (var cell in Registry.Instance.GetAllCellsDNA())
+        {
+            if (cell && !cell.Dead)
+            {
+                if (!cell.Inited)
+                    InitCell(cell);
+                else
+                    Step(cell);
+            }
+        }
     }
 }
