@@ -186,7 +186,7 @@ Transform:
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
   m_Children: []
   m_Father: {fileID: 0}
-  m_RootOrder: 17
+  m_RootOrder: 18
 --- !u!1 &338389706
 GameObject:
   m_ObjectHideFlags: 0
@@ -351,8 +351,7 @@ GameObject:
   - 4: {fileID: 626383793}
   - 114: {fileID: 626383792}
   - 114: {fileID: 626383794}
-  - 114: {fileID: 626383795}
-  - 114: {fileID: 626383796}
+  - 114: {fileID: 626383797}
   m_Layer: 0
   m_Name: LevelManager
   m_TagString: Untagged
@@ -404,7 +403,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   DeadCell: {fileID: 173360, guid: 6b6f9dc3dfa172647b75284c5dc74c24, type: 2}
---- !u!114 &626383795
+--- !u!114 &626383797
 MonoBehaviour:
   m_ObjectHideFlags: 0
   m_PrefabParentObject: {fileID: 0}
@@ -412,32 +411,11 @@ MonoBehaviour:
   m_GameObject: {fileID: 626383791}
   m_Enabled: 1
   m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: dd33f90a0156f194caf95b1bcde57fdc, type: 3}
+  m_Script: {fileID: 11500000, guid: 24dae6c45a8e53549975c2367dcaec3a, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  side:
-    serializedVersion: 2
-    m_Bits: 256
-  wall:
-    serializedVersion: 2
-    m_Bits: 512
-  food:
-    serializedVersion: 2
-    m_Bits: 1024
-  bot:
-    serializedVersion: 2
-    m_Bits: 2048
---- !u!114 &626383796
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_PrefabParentObject: {fileID: 0}
-  m_PrefabInternal: {fileID: 0}
-  m_GameObject: {fileID: 626383791}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: aa0c2fdfd142c0647a6a40dd7608392e, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
+  Width: 100
+  Height: 60
 --- !u!1 &808729390
 GameObject:
   m_ObjectHideFlags: 0
@@ -515,6 +493,83 @@ Transform:
   m_Children: []
   m_Father: {fileID: 0}
   m_RootOrder: 10
+--- !u!1 &1188333682
+GameObject:
+  m_ObjectHideFlags: 0
+  m_PrefabParentObject: {fileID: 0}
+  m_PrefabInternal: {fileID: 0}
+  serializedVersion: 4
+  m_Component:
+  - 4: {fileID: 1188333686}
+  - 114: {fileID: 1188333685}
+  - 114: {fileID: 1188333684}
+  - 114: {fileID: 1188333683}
+  m_Layer: 0
+  m_Name: Controllers
+  m_TagString: Untagged
+  m_Icon: {fileID: 0}
+  m_NavMeshLayer: 0
+  m_StaticEditorFlags: 0
+  m_IsActive: 1
+--- !u!114 &1188333683
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_PrefabParentObject: {fileID: 0}
+  m_PrefabInternal: {fileID: 0}
+  m_GameObject: {fileID: 1188333682}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 7daf5265da362ce4d957083aba855f2b, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  deltaMove: 0.1
+--- !u!114 &1188333684
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_PrefabParentObject: {fileID: 0}
+  m_PrefabInternal: {fileID: 0}
+  m_GameObject: {fileID: 1188333682}
+  m_Enabled: 0
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: aa0c2fdfd142c0647a6a40dd7608392e, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+--- !u!114 &1188333685
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_PrefabParentObject: {fileID: 0}
+  m_PrefabInternal: {fileID: 0}
+  m_GameObject: {fileID: 1188333682}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: dd33f90a0156f194caf95b1bcde57fdc, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  side:
+    serializedVersion: 2
+    m_Bits: 256
+  wall:
+    serializedVersion: 2
+    m_Bits: 512
+  food:
+    serializedVersion: 2
+    m_Bits: 1024
+  bot:
+    serializedVersion: 2
+    m_Bits: 2048
+--- !u!4 &1188333686
+Transform:
+  m_ObjectHideFlags: 0
+  m_PrefabParentObject: {fileID: 0}
+  m_PrefabInternal: {fileID: 0}
+  m_GameObject: {fileID: 1188333682}
+  m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
+  m_LocalPosition: {x: 58.87064, y: 36.155064, z: 0}
+  m_LocalScale: {x: 1, y: 1, z: 1}
+  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
+  m_Children: []
+  m_Father: {fileID: 0}
+  m_RootOrder: 17
 --- !u!1 &1195353853
 GameObject:
   m_ObjectHideFlags: 0

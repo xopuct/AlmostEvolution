@@ -16,22 +16,27 @@ public class Registry : Singleton<Registry>
     //HashSet<GameObject> Cells = new HashSet<GameObject>();
     //HashSet<GameObject> Corpses = new HashSet<GameObject>();
 
-    Vector3 ValidatePos(Vector3 position)
+    Vector3 ValidatePos(Vector2i position)
     {
-        return new Vector2(Mathf.Round(position.x), Mathf.Round(position.y));
+        return new Vector3(position.x, position.y);
     }
 
-    public GameObject Add(Vector3 position, Quaternion rotation, DNA prefab)
+    public GameObject Add(Vector2i position, DNA prefab)
     {
         //var inst = GameObjectPool.Instance.Instantiate(prefab.gameObject, ValidatePos(position), rotation);
         //inst.GetComponent<Bot>().Copy(prefab);
-        var inst = (GameObject)Instantiate(prefab.gameObject, ValidatePos(position), rotation);
-
-
-        CellsObject[inst.GetInstanceID()] = inst;
-        CellsDNA[inst.GetInstanceID()] = inst.GetComponent<DNA>();
-        CellsDNA[inst.GetInstanceID()].Inited = false;
-        CellsDNA[inst.GetInstanceID()].Dead = false;
+        var inst = (GameObject)Instantiate(prefab.gameObject, ValidatePos(position), Quaternion.identity);
+        var cell = inst.GetComponent<DNA>();
+        if (!Field.Instance.SetPosition(inst, position))
+            Debug.LogError("Bad position for cell");
+        else
+        {
+            cell.Pos = position;
+            CellsObject[inst.GetInstanceID()] = inst;
+            CellsDNA[inst.GetInstanceID()] = cell;
+            CellsDNA[inst.GetInstanceID()].Inited = false;
+            CellsDNA[inst.GetInstanceID()].Dead = false;
+        }
         return inst;
     }
 

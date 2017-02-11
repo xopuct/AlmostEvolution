@@ -35,8 +35,7 @@ public class Bot : MonoBehaviour
 
     public void Step(DNA cell)
     {
-        cell.colliders = Physics2D.OverlapCircleAll(cell.sensor.position, 0.1f);
-        cell.colliders = System.Array.FindAll(cell.colliders, c => c.gameObject != cell.gameObject);
+        cell.colliders = Field.Instance.CircleCast(cell.sensor, 1).FindAll(c => c.gameObject != cell.gameObject);
 
         //Profiler.BeginSample("Get neighbor");
         //colliders = Registry.Instance.GetInRadius(sensor.position, 0.1f);
@@ -120,24 +119,24 @@ public class Bot : MonoBehaviour
     {
         for (int i = cell.sensors.Length - 1; i >= 0; i--)
         {
-            if (Physics2D.OverlapCircleAll(cell.sensors[i].position, 0.1f).Length == 0)
+            if (Field.Instance.CircleCast(cell.sensors[i], 1).FindAll(c => c != gameObject).Count == 0)
             {
-                Divide(cell, cell.sensors[i]);
+                Divide(cell, cell.Pos + cell.sensors[i]);
                 return;
             }
         }
         Die(cell);
     }
 
-    void Divide(DNA cell, Transform dividePoint)
+    void Divide(DNA cell, Vector2i dividePoint)
     {
-        Registry.Instance.Add(dividePoint.position, dividePoint.rotation, cell);
+        Registry.Instance.Add(dividePoint, cell);
         cell.energy /= 2;
     }
 
     void Look(DNA cell)
     {
-        if (cell.colliders.Length == 0)                                                  // Пусто
+        if (cell.colliders.Count == 0)                                                  // Пусто
         {
             cell.controller++;
             return;
@@ -179,7 +178,7 @@ public class Bot : MonoBehaviour
 
     void Eat(DNA cell)
     {
-        if (cell.colliders.Length == 0)                                                  // Пусто
+        if (cell.colliders.Count == 0)                                                  // Пусто
         {
             cell.controller++;
             return;
@@ -197,7 +196,7 @@ public class Bot : MonoBehaviour
         }
         else if (cell.colliders[0].gameObject.layer == LayerMask.NameToLayer("bot"))     // бот
         {
-            if (Registry.Instance.Get(cell.colliders[0].gameObject).Dead)
+            if (Registry.Instance.Get(cell.colliders[0]).Dead)
             {
                 cell.energy += LevelManager.Instance.Callories;
                 cell.controller += 3;
@@ -225,19 +224,19 @@ public class Bot : MonoBehaviour
 
     void Move(DNA cell)
     {
-        if (cell.colliders.Length == 0)                                                  // Пусто
+        if (cell.colliders.Count == 0)                                                  // Пусто
         {
-            cell.transform.position = new Vector2(Mathf.Round(cell.sensor.position.x), Mathf.Round(cell.sensor.position.y));
+            cell.Pos = cell.Pos + cell.sensor;
             cell.controller++;
             return;
         }
 
         if (cell.colliders[0].gameObject.layer == LayerMask.NameToLayer("side"))         // Край
         {
-            float newx = Mathf.Round(cell.sensor.position.x);
+            var newx = cell.Pos.x + cell.sensor.x;
             if (newx < 0) newx = 99;
             if (newx > 99) newx = 0;
-            cell.transform.position = new Vector2(newx, Mathf.Round(cell.sensor.position.y));
+            cell.Pos = new Vector2i(newx, cell.sensor.y);
             cell.controller++;
             return;
         }
@@ -268,7 +267,7 @@ public class Bot : MonoBehaviour
             }
 
             Registry.Instance.Kill(cell.colliders[0].gameObject);
-            cell.transform.position = new Vector2(Mathf.Round(cell.sensor.position.x), Mathf.Round(cell.sensor.position.y));
+            cell.Pos = cell.Pos + cell.sensor;
             cell.ChangeColor(1, -1, -1);
             return;
         }
@@ -310,7 +309,7 @@ public class Bot : MonoBehaviour
         {
             if (dismatches < 2)
             {
-                if (cell.genome[i] != cell.colliders[0].GetComponent<DNA>().genome[i]) dismatches++;
+                if (cell.genome[i] != Registry.Instance.Get(cell.colliders[0]).genome[i]) dismatches++;
             }
             else return false;
         }

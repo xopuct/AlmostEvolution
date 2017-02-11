@@ -1,12 +1,15 @@
 ﻿
 
+using System.Collections.Generic;
 using UnityEngine;
 
 
 public class DNA : MonoBehaviour
 {
-    public Transform[] sensors;
-    public Transform sensor
+    public Vector2i[] sensors;
+
+
+    public Vector2i sensor
     {
         get
         {
@@ -29,7 +32,7 @@ public class DNA : MonoBehaviour
 
 
     public SpriteRenderer Color;
-    public Collider2D[] colliders;
+    public List<GameObject> colliders;
     public int controller;
 
     public float rot;
@@ -42,6 +45,13 @@ public class DNA : MonoBehaviour
     public Sprite AliveSprite;
     public Sprite DeadSprite;
     public Color DeadColor;
+
+    public Vector2i Pos
+    {
+        get { return Field.Instance.GetPosition(gameObject); }
+        set { Field.Instance.SetPosition(gameObject, value); }
+    }
+
     public void ChangeColor(float deltaR, float deltaG, float deltaB)
     {
         red = Mathf.Clamp01(red + deltaR);
