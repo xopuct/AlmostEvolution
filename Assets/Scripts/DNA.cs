@@ -19,7 +19,7 @@ public class DNA : MonoBehaviour
 
     }
 
-    public Collider2D Obstacle;
+    public GameObject Obstacle;
     public Vector3 ObstaclePos;
     [Space()]
     public int[] genome;
@@ -31,8 +31,7 @@ public class DNA : MonoBehaviour
     public float blue;
 
 
-    public SpriteRenderer Color;
-    public List<GameObject> colliders;
+    public SpriteRenderer Color; 
     public int controller;
 
     public float rot;
