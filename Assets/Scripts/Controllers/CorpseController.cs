@@ -12,9 +12,9 @@ public class CorpseController : MonoBehaviour
             if (cell)
             {
                 Profiler.BeginSample("TEst");
-                var obstacle = Field.Instance.GetObjectInPos(cell.Pos + dir);
+                var isFree = Field.Instance.IsFree(cell.Pos + dir);
                 Profiler.EndSample();
-                if (!obstacle)                                                  // Пусто
+                if (isFree)                                                  // Пусто
                 {
                     Profiler.BeginSample("Get POs");
                     var pos = cell.Pos;

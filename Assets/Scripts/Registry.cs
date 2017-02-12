@@ -67,13 +67,19 @@ public class Registry : Singleton<Registry>
         if (bot)
         {
             var removeResult = false;
+            var dna = Get(bot);
             removeResult = removeResult || CellsObject.Remove(bot.GetInstanceID());
             removeResult = removeResult || CellsDNA.Remove(bot.GetInstanceID());
             removeResult = removeResult || Corpses.Remove(bot.GetInstanceID());
             removeResult = removeResult || CorpsesDNA.Remove(bot.GetInstanceID());
 
             if (removeResult)
-                Destroy(bot.gameObject);
+            {
+                Profiler.BeginSample("Remove object");
+                Field.Instance.Clear(dna.Pos);
+                Destroy(bot);
+                Profiler.EndSample();
+            }
             //GameObjectPool.Instance.Destroy(bot.gameObject);
         }
     }

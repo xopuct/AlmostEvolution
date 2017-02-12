@@ -18,9 +18,11 @@ public class PositionController : MonoBehaviour
     {
         if (cell)
         {
-            var newPos = Vector3.MoveTowards(cell.transform.position, Field.Instance.GetPosition(cell.gameObject).ToVector2(), deltaMove);
-            if ((newPos - cell.transform.position).sqrMagnitude > deltaMove * deltaMove)
-                cell.transform.position = newPos;
+            //var newPos = Vector3.MoveTowards(cell.transform.position, Field.Instance.GetPosition(cell.gameObject).ToVector2(), deltaMove);
+            //if ((newPos - cell.transform.position).sqrMagnitude > deltaMove * deltaMove)
+            //cell.transform.position = newPos;
+            if (cell.transform.position != cell.Pos.ToVector3())
+                cell.transform.position = cell.Pos.ToVector2();
         }
     }
 }

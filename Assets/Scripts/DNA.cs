@@ -13,7 +13,7 @@ public class DNA : MonoBehaviour
     {
         get
         {
-            var index = (int)(rot / 45);
+            var index = (int)(rot / 45f);
             return sensors[index];
         }
 
@@ -31,7 +31,7 @@ public class DNA : MonoBehaviour
     public float blue;
 
 
-    public SpriteRenderer Color; 
+    public SpriteRenderer Color;
     public int controller;
 
     public float rot;
@@ -53,10 +53,12 @@ public class DNA : MonoBehaviour
 
     public void ChangeColor(float deltaR, float deltaG, float deltaB)
     {
+        Profiler.BeginSample("Change color");
         red = Mathf.Clamp01(red + deltaR);
         green = Mathf.Clamp01(green + deltaG);
         blue = Mathf.Clamp01(blue + deltaB);
         UpdateColor();
+        Profiler.EndSample();
     }
 
     public void UpdateColor()

@@ -5,30 +5,58 @@ using UnityEngine;
 internal class Field : Singleton<Field>
 {
     Dictionary<GameObject, Vector2i> gameObjectsPositions = new Dictionary<GameObject, Vector2i>();
-    Dictionary<Vector2i, GameObject> field = new Dictionary<Vector2i, GameObject>();
+    //Dictionary<Vector2i, GameObject> field = new Dictionary<Vector2i, GameObject>();
+    public GameObject[,] field;
 
     public int Width = 100;
     public int Height = 60;
+    protected override void Init()
+    {
+        base.Init();
+        field = new GameObject[Width, Height];
+    }
 
+    public bool ValidateCoords(Vector2i pos)
+    {
+        return pos.x >= 0 && pos.x < Width && pos.y >= 0 && pos.y < Height;
+    }
     public Vector2i GetPosition(GameObject gameObject)
     {
+        Profiler.BeginSample("GetPosition");
         Vector2i pos;
         if (gameObjectsPositions.TryGetValue(gameObject, out pos))
+        {
+            Profiler.EndSample();
             return pos;
+        }
+        Profiler.EndSample();
         return new Vector2i(-1, -1);
+    }
+
+    public bool Clear(Vector2i pos)
+    {
+        if (ValidateCoords(pos))
+        {
+            var hadSmth = field[pos.x, pos.y];
+            field[pos.x, pos.y] = null;
+            return hadSmth;
+        }
+        else
+            return false;
     }
 
     public bool SetPosition(GameObject gameObject, Vector2i targetPosition)
     {
         var originPos = GetPosition(gameObject);
 
-        if (field.ContainsKey(targetPosition) && field[targetPosition])
+        if (field[targetPosition.x, targetPosition.y])
             return false;
         else
         {
-            field[originPos] = null;
-            field.Remove(originPos);
-            field[targetPosition] = gameObject;
+            if (ValidateCoords(originPos) && GetObjectInPos(originPos) == gameObject)
+                field[originPos.x, originPos.y] = null;
+
+            field[targetPosition.x, targetPosition.y] = gameObject;
             gameObjectsPositions[gameObject] = targetPosition;
             return true;
         }
@@ -36,9 +64,8 @@ internal class Field : Singleton<Field>
 
     public GameObject GetObjectInPos(Vector2i pos)
     {
-        GameObject ret;
-        if (field.TryGetValue(pos, out ret))
-            return ret;
+        if (ValidateCoords(pos))
+            return field[pos.x, pos.y];
         return null;
     }
 
@@ -51,13 +78,16 @@ internal class Field : Singleton<Field>
         }
         else
         {
-            for (int x = Mathf.Max(0, center.x - r); x < Mathf.Min(Width - 1, center.x + r); x++)
-                for (int y = Mathf.Max(0, center.y - r); y < Mathf.Min(Height - 1, center.y + r); y++)
+            for (int x = Mathf.Max(0, center.x - r); x < Mathf.Min(Width, center.x + r); x++)
+                for (int y = Mathf.Max(0, center.y - r); y < Mathf.Min(Height, center.y + r); y++)
                     res.Add(GetObjectInPos(new Vector2i(x, y)));
         }
         res.RemoveAll(g => !g);
         return res;
     }
 
-
+    public bool IsFree(Vector2i pos)
+    {
+        return ValidateCoords(pos) && !GetObjectInPos(pos);
+    }
 }

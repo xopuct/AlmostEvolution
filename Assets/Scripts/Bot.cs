@@ -120,7 +120,7 @@ public class Bot : MonoBehaviour
     {
         for (int i = cell.sensors.Length - 1; i >= 0; i--)
         {
-            if (!Field.Instance.GetObjectInPos(cell.Pos + cell.sensors[i]))
+            if (Field.Instance.IsFree(cell.Pos + cell.sensors[i]))
             {
                 Divide(cell, cell.Pos + cell.sensors[i]);
                 return;
@@ -180,12 +180,7 @@ public class Bot : MonoBehaviour
             return;
         }
 
-        if (cell.Obstacle.layer == LayerMask.NameToLayer("wall"))    // стена
-        {
-            cell.controller += 2;
-            return;
-        }
-        else if (cell.Obstacle.layer == LayerMask.NameToLayer("bot"))     // бот
+        if (cell.Obstacle.layer == LayerMask.NameToLayer("bot"))     // бот
         {
             if (Registry.Instance.Get(cell.Obstacle).Dead)
             {
@@ -206,7 +201,7 @@ public class Bot : MonoBehaviour
                 }
             }
 
-            Registry.Instance.Kill(cell.Obstacle.gameObject);
+            Registry.Instance.Remove(cell.Obstacle.gameObject);
             cell.ChangeColor(1, -1, -1);
 
             return;
@@ -215,25 +210,24 @@ public class Bot : MonoBehaviour
 
     void Move(DNA cell)
     {
-        if (!cell.Obstacle)                                                  // Пусто
+        if (!cell.Obstacle && Field.Instance.IsFree(cell.Pos + cell.sensor))                                                  // Пусто
         {
             cell.Pos = cell.Pos + cell.sensor;
             cell.controller++;
             return;
         }
-
-        if (cell.Obstacle.gameObject.layer == LayerMask.NameToLayer("side"))         // Край
+        if (!cell.Obstacle)
+        {
+            cell.controller += 2;
+            return;
+        }
+        else if (cell.Obstacle.gameObject.layer == LayerMask.NameToLayer("side"))         // Край
         {
             var newx = cell.Pos.x + cell.sensor.x;
             if (newx < 0) newx = 99;
             if (newx > 99) newx = 0;
             cell.Pos = new Vector2i(newx, cell.sensor.y);
             cell.controller++;
-            return;
-        }
-        else if (cell.Obstacle.gameObject.layer == LayerMask.NameToLayer("wall"))    // стена
-        {
-            cell.controller += 2;
             return;
         }
         else if (cell.Obstacle.gameObject.layer == LayerMask.NameToLayer("bot"))     // бот
@@ -257,7 +251,7 @@ public class Bot : MonoBehaviour
                 }
             }
 
-            Registry.Instance.Kill(cell.Obstacle.gameObject);
+            Registry.Instance.Remove(cell.Obstacle.gameObject);
             cell.Pos = cell.Pos + cell.sensor;
             cell.ChangeColor(1, -1, -1);
             return;

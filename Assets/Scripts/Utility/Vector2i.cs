@@ -26,6 +26,10 @@ public struct Vector2i
         return new Vector2(x, y);
     }
 
+    public Vector3 ToVector3()
+    {
+        return new Vector3(x, y, 0);
+    }
     public static Vector2i operator -(Vector2i a, Vector2i b)
     {
         return new Vector2i(a.x - b.x, a.y - b.y);
