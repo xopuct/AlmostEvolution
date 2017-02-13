@@ -24,7 +24,6 @@ GameObject:
   m_Component:
   - 4: {fileID: 470382}
   - 212: {fileID: 21292012}
-  - 58: {fileID: 5873282}
   - 114: {fileID: 11422504}
   m_Layer: 11
   m_Name: cellVegan
@@ -263,20 +262,6 @@ Transform:
   m_Children: []
   m_Father: {fileID: 470382}
   m_RootOrder: 0
---- !u!58 &5873282
-CircleCollider2D:
-  m_ObjectHideFlags: 1
-  m_PrefabParentObject: {fileID: 0}
-  m_PrefabInternal: {fileID: 100100000}
-  m_GameObject: {fileID: 119604}
-  m_Enabled: 1
-  m_Density: 1
-  m_Material: {fileID: 0}
-  m_IsTrigger: 1
-  m_UsedByEffector: 0
-  m_Offset: {x: 0, y: 0}
-  serializedVersion: 2
-  m_Radius: 0.4
 --- !u!114 &11422504
 MonoBehaviour:
   m_ObjectHideFlags: 1
