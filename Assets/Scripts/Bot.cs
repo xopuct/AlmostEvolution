@@ -40,7 +40,11 @@ public class Bot : MonoBehaviour
     public void Step(DNA cell)
     {
         Profiler.BeginSample("Get obstacles");
-        cell.Obstacle = Field.Instance.GetObjectInPos(cell.Pos + cell.sensor);
+        var obstacle = Field.Instance.GetObjectInPos(cell.Pos + cell.sensor);
+        if (obstacle)
+            cell.Obstacle = obstacle.gameObject;
+        else
+            cell.Obstacle = null;
         Profiler.EndSample();
         //Profiler.BeginSample("Get neighbor");
         //colliders = Registry.Instance.GetInRadius(sensor.position, 0.1f);

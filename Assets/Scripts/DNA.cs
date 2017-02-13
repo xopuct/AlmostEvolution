@@ -44,11 +44,11 @@ public class DNA : MonoBehaviour
     public Sprite AliveSprite;
     public Sprite DeadSprite;
     public Color DeadColor;
-
+    Vector2i pos;
     public Vector2i Pos
     {
-        get { return Field.Instance.GetPosition(gameObject); }
-        set { Field.Instance.SetPosition(gameObject, value); }
+        get { return pos; }
+        set { if (Field.Instance.Move(this, value)) pos = value; }
     }
 
     public void ChangeColor(float deltaR, float deltaG, float deltaB)

@@ -27,7 +27,7 @@ public class Registry : Singleton<Registry>
         //inst.GetComponent<Bot>().Copy(prefab);
         var inst = (GameObject)Instantiate(prefab.gameObject, ValidatePos(position), Quaternion.identity);
         var cell = inst.GetComponent<DNA>();
-        if (!Field.Instance.SetPosition(inst, position))
+        if (!Field.Instance.IsFree(position))
             Debug.LogError("Bad position for cell");
         else
         {
