@@ -4,15 +4,17 @@ using System.Collections.Generic;
 
 public class StartConfiguration : MonoBehaviour
 {
-    public int Callories = 200;
-
     public int StartEnergy = 50;
 
     public float SynthMultipler = 1;
 
     public int EnergyToDivide = 1000;
 
-    public int CorpseEnergyReduction;
+    public float CorpseEnergyReduction = 0.99f;
+
+    public int LowLevelCorpseEnergy = 200;
+
+    public int MinCorpseEnergy = 10;
 
     [Serializable]
     public struct Slot

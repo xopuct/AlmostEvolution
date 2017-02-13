@@ -14,10 +14,11 @@ public class CorpseController : MonoBehaviour
                 Profiler.BeginSample("TEst");
                 var isFree = Field.Instance.IsFree(cell.Pos + dir);
                 Profiler.EndSample();
-                if (cell.energy > 200)
-                    cell.energy = (int)(cell.energy * 0.9f);
-                else
+                if (cell.energy > LevelManager.Instance.LowLevelCorpseEnergy)
+                    cell.energy = (int)(cell.energy * LevelManager.Instance.CorpseEnergyReduction);
+                else if (cell.energy > LevelManager.Instance.MinCorpseEnergy)
                     cell.energy -= 1;
+
                 if (cell.energy <= 0)
                     Registry.Instance.Kill(cell.gameObject);
                 if (isFree)                                                  // Пусто

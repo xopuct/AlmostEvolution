@@ -4,11 +4,15 @@ using System.Collections.Generic;
 using Random = UnityEngine.Random;
 public class Bot : MonoBehaviour
 {
-    public LayerMask side;
-    public LayerMask wall;
-    public LayerMask food;
-    public LayerMask bot;
 
+    int botLayer;
+    int wallLayer;
+
+    void Start()
+    {
+        botLayer = LayerMask.NameToLayer("bot");
+        wallLayer = LayerMask.NameToLayer("wall");
+    }
 
     // Use this for initialization
     void InitCell(DNA cell)
@@ -66,7 +70,9 @@ public class Bot : MonoBehaviour
         // поворачивается
         else if (cell.genome[cell.controller] > 0 && cell.genome[cell.controller] < 8)
         {
+            Profiler.BeginSample("Turn");
             Turn(cell);
+            Profiler.EndSample();
             return;
         }
         // жрёт
@@ -89,13 +95,17 @@ public class Bot : MonoBehaviour
         // фотосинтез
         else if (cell.genome[cell.controller] == 10)
         {
+            Profiler.BeginSample("Synth");
             Synth(cell);
+            Profiler.EndSample();
             return;
         }
         // проверяет здоровье
         else if (cell.genome[cell.controller] == 11)
         {
+            Profiler.BeginSample("Check Energy");
             CheckEnergy(cell);
+            Profiler.EndSample();
             return;
         }
         // рожает
@@ -118,21 +128,24 @@ public class Bot : MonoBehaviour
 
     void TryToDivide(DNA cell)
     {
+        Profiler.BeginSample("Try to Divide");
         for (int i = cell.sensors.Length - 1; i >= 0; i--)
         {
             if (Field.Instance.IsFree(cell.Pos + cell.sensors[i]))
             {
                 Divide(cell, cell.Pos + cell.sensors[i]);
+                Profiler.EndSample();
                 return;
             }
         }
         Die(cell);
+        Profiler.EndSample();
     }
 
     void Divide(DNA cell, Vector2i dividePoint)
     {
-        Registry.Instance.Add(dividePoint, cell);
         cell.energy /= 2;
+        Registry.Instance.Add(dividePoint, cell);
     }
 
     void Look(DNA cell)
@@ -143,12 +156,12 @@ public class Bot : MonoBehaviour
             return;
         }
 
-        if (cell.Obstacle.layer == LayerMask.NameToLayer("wall"))    // стена
+        if (cell.Obstacle.layer == wallLayer)    // стена
         {
             cell.controller += 2;
             return;
         }
-        else if (cell.Obstacle.layer == LayerMask.NameToLayer("bot"))     // бот
+        else if (cell.Obstacle.layer == botLayer)     // бот
         {
             if (Registry.Instance.Get(cell.Obstacle.gameObject).Dead)
             {
@@ -180,7 +193,7 @@ public class Bot : MonoBehaviour
             return;
         }
 
-        if (cell.Obstacle.layer == LayerMask.NameToLayer("bot"))     // бот
+        if (cell.Obstacle.layer == botLayer)     // бот
         {
             var targetCalories = Registry.Instance.Get(cell.Obstacle).energy;
 
@@ -212,9 +225,11 @@ public class Bot : MonoBehaviour
 
     void Move(DNA cell)
     {
-        if (!cell.Obstacle && Field.Instance.IsFree(cell.Pos + cell.sensor))                                                  // Пусто
+        var targetPos = cell.Pos + cell.sensor;
+        targetPos.x = (int)Mathf.Repeat(targetPos.x, Field.Instance.Width);
+        if (!cell.Obstacle && Field.Instance.IsFree(targetPos))                                                  // Пусто
         {
-            cell.Pos = cell.Pos + cell.sensor;
+            cell.Pos = targetPos;
             cell.controller++;
             return;
         }
@@ -223,16 +238,7 @@ public class Bot : MonoBehaviour
             cell.controller += 2;
             return;
         }
-        else if (cell.Obstacle.gameObject.layer == LayerMask.NameToLayer("side"))         // Край
-        {
-            var newx = cell.Pos.x + cell.sensor.x;
-            if (newx < 0) newx = 99;
-            if (newx > 99) newx = 0;
-            cell.Pos = new Vector2i(newx, cell.sensor.y);
-            cell.controller++;
-            return;
-        }
-        else if (cell.Obstacle.gameObject.layer == LayerMask.NameToLayer("bot"))     // бот
+        else if (cell.Obstacle.gameObject.layer == botLayer)     // бот
         {
             var targetCalories = Registry.Instance.Get(cell.Obstacle).energy;
             if (Registry.Instance.Get(cell.Obstacle.gameObject).Dead)
@@ -255,7 +261,7 @@ public class Bot : MonoBehaviour
             }
 
             Registry.Instance.Remove(cell.Obstacle.gameObject);
-            cell.Pos = cell.Pos + cell.sensor;
+            cell.Pos = targetPos;
             cell.ChangeColor(1, -1, -1);
             return;
         }
@@ -264,7 +270,7 @@ public class Bot : MonoBehaviour
 
     void Synth(DNA cell)
     {
-        cell.energy += (int)Mathf.Round(cell.transform.position.y * LevelManager.Instance.SynthMultipler);
+        cell.energy += (int)(cell.Pos.y * LevelManager.Instance.SynthMultipler);
         cell.controller++;
 
         cell.ChangeColor(-0.1f, 0.1f, -0.1f);
@@ -291,6 +297,7 @@ public class Bot : MonoBehaviour
 
     bool CheckRelations(DNA cell)
     {
+        Profiler.BeginSample("Check Relations");
         int dismatches = 0;
 
         for (int i = 0; i < cell.genome.Length; i++)
@@ -299,8 +306,13 @@ public class Bot : MonoBehaviour
             {
                 if (cell.genome[i] != Registry.Instance.Get(cell.Obstacle).genome[i]) dismatches++;
             }
-            else return false;
+            else
+            {
+                Profiler.EndSample();
+                return false;
+            }
         }
+        Profiler.EndSample();
         return true;
     }
 

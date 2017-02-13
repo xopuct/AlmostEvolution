@@ -11,7 +11,9 @@ public class LevelManager : Singleton<LevelManager>
 
     public int EnergyToDivide { get { return Configuration.EnergyToDivide; } }
 
-    public int CorpseEnergyReduction { get { return Configuration.CorpseEnergyReduction; } }
+    public float CorpseEnergyReduction { get { return Configuration.CorpseEnergyReduction; } }
+    public int LowLevelCorpseEnergy { get { return Configuration.LowLevelCorpseEnergy; } }
+    public int MinCorpseEnergy { get { return Configuration.MinCorpseEnergy; } }
 
     public int mutations;
     public TextMesh mutationsText;

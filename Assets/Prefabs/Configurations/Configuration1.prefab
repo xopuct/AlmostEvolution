@@ -51,11 +51,12 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 0eb0f728492b8f04582aff9247580128, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  Callories: 200
   StartEnergy: 50
   SynthMultipler: 1
   EnergyToDivide: 1000
-  CorpseEnergyReduction: 2
+  CorpseEnergyReduction: 0.99
+  LowLevelCorpseEnergy: 200
+  MinCorpseEnergy: 10
   Slots:
   - Position: {x: 22, y: 55}
     Cell: {fileID: 11494036, guid: 67749043cc34d7743b7b0aac0a47275a, type: 2}
