@@ -12,6 +12,8 @@ public class StartConfiguration : MonoBehaviour
 
     public int EnergyToDivide = 1000;
 
+    public int CorpseEnergyReduction;
+
     [Serializable]
     public struct Slot
     {
@@ -21,6 +23,8 @@ public class StartConfiguration : MonoBehaviour
 
     public List<Slot> Slots;
     public string ProductedCellName = "Cell";
+
+
     public void Place()
     {
         foreach (var slot in Slots)

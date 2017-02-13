@@ -182,9 +182,11 @@ public class Bot : MonoBehaviour
 
         if (cell.Obstacle.layer == LayerMask.NameToLayer("bot"))     // бот
         {
+            var targetCalories = Registry.Instance.Get(cell.Obstacle).energy;
+
             if (Registry.Instance.Get(cell.Obstacle).Dead)
             {
-                cell.energy += LevelManager.Instance.Callories;
+                cell.energy += targetCalories;
                 cell.controller += 3;
             }
             else
@@ -192,12 +194,12 @@ public class Bot : MonoBehaviour
                 if (CheckRelations(cell))
                 {
                     cell.controller += 4;
-                    cell.energy += LevelManager.Instance.Callories;
+                    cell.energy += targetCalories / 2;
                 }
                 else
                 {
                     cell.controller += 5;
-                    cell.energy += LevelManager.Instance.Callories;
+                    cell.energy += targetCalories;
                 }
             }
 
@@ -232,9 +234,10 @@ public class Bot : MonoBehaviour
         }
         else if (cell.Obstacle.gameObject.layer == LayerMask.NameToLayer("bot"))     // бот
         {
+            var targetCalories = Registry.Instance.Get(cell.Obstacle).energy;
             if (Registry.Instance.Get(cell.Obstacle.gameObject).Dead)
             {
-                cell.energy += LevelManager.Instance.Callories;
+                cell.energy += targetCalories;
                 cell.controller += 3;
             }
             else
@@ -242,12 +245,12 @@ public class Bot : MonoBehaviour
                 if (CheckRelations(cell))
                 {
                     cell.controller += 4;
-                    cell.energy += LevelManager.Instance.Callories;
+                    cell.energy += targetCalories / 2;
                 }
                 else
                 {
                     cell.controller += 5;
-                    cell.energy += LevelManager.Instance.Callories;
+                    cell.energy += targetCalories;
                 }
             }
 

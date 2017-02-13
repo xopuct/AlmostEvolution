@@ -5,13 +5,13 @@ using System.Collections.Generic;
 public class LevelManager : Singleton<LevelManager>
 {
 
-    public int Callories { get { return Configuration.Callories; } }
-
     public int StartEnergy { get { return Configuration.StartEnergy; } }
 
     public float SynthMultipler { get { return Configuration.SynthMultipler; } }
 
     public int EnergyToDivide { get { return Configuration.EnergyToDivide; } }
+
+    public int CorpseEnergyReduction { get { return Configuration.CorpseEnergyReduction; } }
 
     public int mutations;
     public TextMesh mutationsText;

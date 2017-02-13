@@ -55,6 +55,7 @@ MonoBehaviour:
   StartEnergy: 50
   SynthMultipler: 1
   EnergyToDivide: 1000
+  CorpseEnergyReduction: 2
   Slots:
   - Position: {x: 22, y: 55}
     Cell: {fileID: 11494036, guid: 67749043cc34d7743b7b0aac0a47275a, type: 2}
