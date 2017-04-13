@@ -53,12 +53,12 @@ public class DNA : MonoBehaviour
 
     public void ChangeColor(float deltaR, float deltaG, float deltaB)
     {
-        Profiler.BeginSample("Change color");
+        UnityEngine.Profiling.Profiler.BeginSample("Change color");
         red = Mathf.Clamp01(red + deltaR);
         green = Mathf.Clamp01(green + deltaG);
         blue = Mathf.Clamp01(blue + deltaB);
         UpdateColor();
-        Profiler.EndSample();
+        UnityEngine.Profiling.Profiler.EndSample();
     }
 
     public void UpdateColor()

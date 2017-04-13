@@ -39,13 +39,13 @@ public class Bot : MonoBehaviour
 
     public void Step(DNA cell)
     {
-        Profiler.BeginSample("Get obstacles");
+        UnityEngine.Profiling.Profiler.BeginSample("Get obstacles");
         var obstacle = Field.Instance.GetObjectInPos(cell.Pos + cell.sensor);
         if (obstacle)
             cell.Obstacle = obstacle.gameObject;
         else
             cell.Obstacle = null;
-        Profiler.EndSample();
+        UnityEngine.Profiling.Profiler.EndSample();
         //Profiler.BeginSample("Get neighbor");
         //colliders = Registry.Instance.GetInRadius(sensor.position, 0.1f);
         //Profiler.EndSample();
@@ -66,50 +66,50 @@ public class Bot : MonoBehaviour
         // смотрит
         if (cell.genome[cell.controller] == 0)
         {
-            Profiler.BeginSample("Look");
+            UnityEngine.Profiling.Profiler.BeginSample("Look");
             Look(cell);
-            Profiler.EndSample();
+            UnityEngine.Profiling.Profiler.EndSample();
             return;
         }
         // поворачивается
         else if (cell.genome[cell.controller] > 0 && cell.genome[cell.controller] < 8)
         {
-            Profiler.BeginSample("Turn");
+            UnityEngine.Profiling.Profiler.BeginSample("Turn");
             Turn(cell);
-            Profiler.EndSample();
+            UnityEngine.Profiling.Profiler.EndSample();
             return;
         }
         // жрёт
         else if (cell.genome[cell.controller] == 8)
         {
-            Profiler.BeginSample("Look");
+            UnityEngine.Profiling.Profiler.BeginSample("Look");
             Eat(cell);
-            Profiler.EndSample();
+            UnityEngine.Profiling.Profiler.EndSample();
             return;
         }
         // жрёт
         else if (cell.genome[cell.controller] == 9)
         {
-            Profiler.BeginSample("Move");
+            UnityEngine.Profiling.Profiler.BeginSample("Move");
             Move(cell);
-            Profiler.EndSample();
+            UnityEngine.Profiling.Profiler.EndSample();
 
             return;
         }
         // фотосинтез
         else if (cell.genome[cell.controller] == 10)
         {
-            Profiler.BeginSample("Synth");
+            UnityEngine.Profiling.Profiler.BeginSample("Synth");
             Synth(cell);
-            Profiler.EndSample();
+            UnityEngine.Profiling.Profiler.EndSample();
             return;
         }
         // проверяет здоровье
         else if (cell.genome[cell.controller] == 11)
         {
-            Profiler.BeginSample("Check Energy");
+            UnityEngine.Profiling.Profiler.BeginSample("Check Energy");
             CheckEnergy(cell);
-            Profiler.EndSample();
+            UnityEngine.Profiling.Profiler.EndSample();
             return;
         }
         // рожает
@@ -132,18 +132,17 @@ public class Bot : MonoBehaviour
 
     void TryToDivide(DNA cell)
     {
-        Profiler.BeginSample("Try to Divide");
+        UnityEngine.Profiling.Profiler.BeginSample("Try to Divide");
         for (int i = cell.sensors.Length - 1; i >= 0; i--)
         {
             if (Field.Instance.IsFree(cell.Pos + cell.sensors[i]))
             {
                 Divide(cell, cell.Pos + cell.sensors[i]);
-                Profiler.EndSample();
+                UnityEngine.Profiling.Profiler.EndSample();
                 return;
             }
         }
-        Die(cell);
-        Profiler.EndSample();
+        UnityEngine.Profiling.Profiler.EndSample();
     }
 
     void Divide(DNA cell, Vector2i dividePoint)
@@ -178,7 +177,6 @@ public class Bot : MonoBehaviour
             }
             return;
         }
-
     }
 
     void Turn(DNA cell)
@@ -301,7 +299,7 @@ public class Bot : MonoBehaviour
 
     bool CheckRelations(DNA cell)
     {
-        Profiler.BeginSample("Check Relations");
+        UnityEngine.Profiling.Profiler.BeginSample("Check Relations");
         int dismatches = 0;
 
         for (int i = 0; i < cell.genome.Length; i++)
@@ -312,11 +310,11 @@ public class Bot : MonoBehaviour
             }
             else
             {
-                Profiler.EndSample();
+                UnityEngine.Profiling.Profiler.EndSample();
                 return false;
             }
         }
-        Profiler.EndSample();
+        UnityEngine.Profiling.Profiler.EndSample();
         return true;
     }
 

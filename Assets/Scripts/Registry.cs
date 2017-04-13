@@ -75,10 +75,10 @@ public class Registry : Singleton<Registry>
 
             if (removeResult)
             {
-                Profiler.BeginSample("Remove object");
+                UnityEngine.Profiling.Profiler.BeginSample("Remove object");
                 Field.Instance.Clear(dna.Pos);
                 Destroy(bot);
-                Profiler.EndSample();
+                UnityEngine.Profiling.Profiler.EndSample();
             }
             //GameObjectPool.Instance.Destroy(bot.gameObject);
         }
