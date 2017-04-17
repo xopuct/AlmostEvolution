@@ -11,6 +11,12 @@ public struct Vector2i
         this.y = y;
     }
 
+    public Vector2i(Vector2 origin)
+    {
+        this.x = (int)origin.x;
+        this.y = (int)origin.y;
+    }
+
     public static Vector2i operator +(Vector2i a, Vector2i b)
     {
         return new Vector2i(a.x + b.x, a.y + b.y);
@@ -60,5 +66,5 @@ public struct Vector2i
     public override string ToString()
     {
         return string.Format("({0}, {1})", x, y);
-    }
+    } 
 }
