@@ -4,27 +4,22 @@ using Entitas;
 using UnityEngine;
 
 
-public class SynthSystem : ReactiveSystem<GameEntity>
+public class SynthSystem : IExecuteSystem
 {
-    public SynthSystem(Contexts contexts) : base(contexts.game) { }
+    private IGroup<GameEntity> _group;
 
-    protected override void Execute(List<GameEntity> entities)
+    public SynthSystem(Contexts contexts)
     {
-        foreach (var e in entities)
+        _group = contexts.game.GetGroup(GameMatcher.Cell);
+    }
+    public void Execute()
+    {
+        foreach (var e in _group.GetEntities())
         {
-            e.cell.energy += (int)(e.position.Y * LevelManager.Instance.SynthMultipler);
-            e.cell.controller++;
+            if (e.isCorpse || e.cell.CurrentGene != 10)
+                continue;
+            e.ReplaceCell(e.cell.genome, e.cell.energy + (int)(e.position.Y * LevelManager.Instance.SynthMultipler), e.cell.controller + 1);
             e.ReplaceColor(e.color.ChangeColor(-0.1f, 0.1f, -0.1f));
         }
-    }
-
-    protected override bool Filter(GameEntity entity)
-    {
-        return !entity.isCorpse && !entity.hasNewCell && entity.cell.CurrentGene == 10;
-    }
-
-    protected override Collector<GameEntity> GetTrigger(IContext<GameEntity> context)
-    {
-        return context.CreateCollector(GameMatcher.Cell);
     }
 }

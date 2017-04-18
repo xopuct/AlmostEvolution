@@ -40,7 +40,7 @@ public class Bot : MonoBehaviour
     public void Step(DNA cell)
     {
         UnityEngine.Profiling.Profiler.BeginSample("Get obstacles");
-        var obstacle = Field.Instance.GetObjectInPos(cell.Pos + cell.sensor);
+        var obstacle = FieldOld.Instance.GetObjectInPos(cell.Pos + cell.sensor);
         if (obstacle)
             cell.Obstacle = obstacle.gameObject;
         else
@@ -135,7 +135,7 @@ public class Bot : MonoBehaviour
         UnityEngine.Profiling.Profiler.BeginSample("Try to Divide");
         for (int i = cell.sensors.Length - 1; i >= 0; i--)
         {
-            if (Field.Instance.IsFree(cell.Pos + cell.sensors[i]))
+            if (FieldOld.Instance.IsFree(cell.Pos + cell.sensors[i]))
             {
                 Divide(cell, cell.Pos + cell.sensors[i]);
                 UnityEngine.Profiling.Profiler.EndSample();
@@ -228,8 +228,8 @@ public class Bot : MonoBehaviour
     void Move(DNA cell)
     {
         var targetPos = cell.Pos + cell.sensor;
-        targetPos.x = (int)Mathf.Repeat(targetPos.x, Field.Instance.Width);
-        if (!cell.Obstacle && Field.Instance.IsFree(targetPos))                                                  // Пусто
+        targetPos.x = (int)Mathf.Repeat(targetPos.x, FieldOld.Instance.Width);
+        if (!cell.Obstacle && FieldOld.Instance.IsFree(targetPos))                                                  // Пусто
         {
             cell.Pos = targetPos;
             cell.controller++;

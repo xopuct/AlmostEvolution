@@ -21,10 +21,12 @@ public class DivideSystem : ReactiveSystem<GameEntity>
                 if (Field.Instance.IsFree(newCellPos))
                 {
                     context.CreateEntity().AddNewCell(e.cell.genome, e.color.Color, (int)e.sensor.rot, newCellPos);
+                    e.isDividing = false;
                     break;
                 }
             }
-            e.isCorpse = true;
+            if (e.isDividing)
+                e.isCorpse = true;
         }
     }
 

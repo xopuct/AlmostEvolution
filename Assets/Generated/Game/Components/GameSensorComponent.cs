@@ -11,7 +11,7 @@ public partial class GameEntity {
     public SensorComponent sensor { get { return (SensorComponent)GetComponent(GameComponentsLookup.Sensor); } }
     public bool hasSensor { get { return HasComponent(GameComponentsLookup.Sensor); } }
 
-    public void AddSensor(Vector2i[] newSensors, float newRot) {
+    public void AddSensor(Vector2i[] newSensors, int newRot) {
         var index = GameComponentsLookup.Sensor;
         var component = CreateComponent<SensorComponent>(index);
         component.sensors = newSensors;
@@ -19,7 +19,7 @@ public partial class GameEntity {
         AddComponent(index, component);
     }
 
-    public void ReplaceSensor(Vector2i[] newSensors, float newRot) {
+    public void ReplaceSensor(Vector2i[] newSensors, int newRot) {
         var index = GameComponentsLookup.Sensor;
         var component = CreateComponent<SensorComponent>(index);
         component.sensors = newSensors;

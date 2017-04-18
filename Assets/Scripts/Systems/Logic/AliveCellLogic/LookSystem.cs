@@ -4,14 +4,22 @@ using Entitas;
 using UnityEngine;
 
 
-public class LookSystem : ReactiveSystem<GameEntity>
+public class LookSystem : IExecuteSystem
 {
-    public LookSystem(Contexts contexts) : base(contexts.game) { }
+    private IGroup<GameEntity> _group;
 
-    protected override void Execute(List<GameEntity> entities)
+    public LookSystem(Contexts contexts)
     {
-        foreach (var e in entities)
+        _group = contexts.game.GetGroup(GameMatcher.Cell);
+    }
+
+    public void Execute()
+    {
+        foreach (var e in _group.GetEntities())
         {
+            if (e.isCorpse || e.cell.CurrentGene != 0)
+                continue;
+
             var obstacle = SensorHelper.GetEntityInEyeLook(e);
             if (obstacle == null)                                                  // Пусто
             {
@@ -39,18 +47,6 @@ public class LookSystem : ReactiveSystem<GameEntity>
                     else e.ReplaceController(e.cell.controller + 5);
                 }
             }
-
-
         }
-    }
-
-    protected override bool Filter(GameEntity entity)
-    {
-        return !entity.isCorpse && !entity.hasNewCell && entity.cell.CurrentGene == 0;
-    }
-
-    protected override Collector<GameEntity> GetTrigger(IContext<GameEntity> context)
-    {
-        return context.CreateCollector(GameMatcher.Cell);
     }
 }

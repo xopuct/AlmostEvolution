@@ -4,14 +4,21 @@ using Entitas;
 using UnityEngine;
 
 
-public class MoveSystem : ReactiveSystem<GameEntity>
+public class MoveSystem : IExecuteSystem
 {
-    public MoveSystem(Contexts contexts) : base(contexts.game) { }
+    private IGroup<GameEntity> _group;
 
-    protected override void Execute(List<GameEntity> entities)
+    public MoveSystem(Contexts contexts)
     {
-        foreach (var e in entities)
+        _group = contexts.game.GetGroup(GameMatcher.Cell);
+    }
+
+    public void Execute()
+    {
+        foreach (var e in _group.GetEntities())
         {
+            if (e.isCorpse || e.cell.CurrentGene != 9)
+                continue;
             var obstacle = SensorHelper.GetEntityInEyeLook(e);
             var targetPos = e.position + e.sensor.sensor;
             targetPos.x = (int)Mathf.Repeat(targetPos.x, Field.Instance.Width);
@@ -54,15 +61,5 @@ public class MoveSystem : ReactiveSystem<GameEntity>
                 e.ReplacePosition(targetPos.x, targetPos.y);
             }
         }
-    }
-
-    protected override bool Filter(GameEntity entity)
-    {
-        return !entity.isCorpse && !entity.hasNewCell && entity.cell.CurrentGene == 8;
-    }
-
-    protected override Collector<GameEntity> GetTrigger(IContext<GameEntity> context)
-    {
-        return context.CreateCollector(GameMatcher.Cell);
     }
 }

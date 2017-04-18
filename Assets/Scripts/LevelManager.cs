@@ -2,6 +2,7 @@
 using System.Collections;
 using System.Collections.Generic;
 using Entitas;
+using Entitas.VisualDebugging.Unity;
 
 public class LevelManager : Singleton<LevelManager>
 {
@@ -37,6 +38,10 @@ public class LevelManager : Singleton<LevelManager>
         //    Debug.LogError("Please setup cell configuration");
 
         var contexts = Contexts.sharedInstance;
+//#if (!ENTITAS_DISABLE_VISUAL_DEBUGGING && UNITY_EDITOR)
+//        var contextObserver = new ContextObserver(contexts.game);
+//        Object.DontDestroyOnLoad(contextObserver.gameObject);
+//#endif
         //contexts.SetAllContexts();
 
         _systems = createSystems(contexts);

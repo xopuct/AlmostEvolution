@@ -4,29 +4,26 @@ using Entitas;
 using UnityEngine;
 
 
-public class TurnSystem : ReactiveSystem<GameEntity>
+public class TurnSystem : IExecuteSystem
 {
-    public TurnSystem(Contexts contexts) : base(contexts.game) { }
+    private IGroup<GameEntity> _group;
 
-    protected override void Execute(List<GameEntity> entities)
+    public TurnSystem(Contexts contexts)
     {
-        foreach (var e in entities)
+        _group = contexts.game.GetGroup(GameMatcher.Cell);
+    }
+    public void Execute()
+    {
+        foreach (var e in _group.GetEntities())
         {
+            if (e.isCorpse || (e.cell.CurrentGene == 0 || e.cell.CurrentGene > 7))
+                continue;
+
             var rot = e.sensor.rot;
             rot += 45 * e.cell.CurrentGene;
-            if (e.sensor.rot >= 360) rot -= 360;
+            if (rot >= 360) rot = (int)Mathf.Repeat(rot, 360);
             e.ReplaceRot(rot);
             e.ReplaceCell(e.cell.genome, e.cell.energy, e.cell.controller + 1);
         }
-    }
-
-    protected override bool Filter(GameEntity entity)
-    {
-        return !entity.isCorpse && !entity.hasNewCell && entity.cell.CurrentGene > 0 && entity.cell.CurrentGene < 8;
-    }
-
-    protected override Collector<GameEntity> GetTrigger(IContext<GameEntity> context)
-    {
-        return context.CreateCollector(GameMatcher.Cell);
     }
 }

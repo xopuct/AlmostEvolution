@@ -27,7 +27,7 @@ public class Registry : Singleton<Registry>
         //inst.GetComponent<Bot>().Copy(prefab);
         var inst = (GameObject)Instantiate(prefab.gameObject, ValidatePos(position), Quaternion.identity);
         var cell = inst.GetComponent<DNA>();
-        if (!Field.Instance.IsFree(position))
+        if (!FieldOld.Instance.IsFree(position))
             Debug.LogError("Bad position for cell");
         else
         {
@@ -76,7 +76,7 @@ public class Registry : Singleton<Registry>
             if (removeResult)
             {
                 UnityEngine.Profiling.Profiler.BeginSample("Remove object");
-                Field.Instance.Clear(dna.Pos);
+                FieldOld.Instance.Clear(dna.Pos);
                 Destroy(bot);
                 UnityEngine.Profiling.Profiler.EndSample();
             }

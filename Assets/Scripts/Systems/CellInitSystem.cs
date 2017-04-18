@@ -42,10 +42,10 @@ public class CellInitSystem : ReactiveSystem<GameEntity>
                 new Vector2i(1, 1)
             }, e.newCell.rot);
             cell.AddPosition(e.newCell.pos.x, e.newCell.pos.y);
-            
-            
-            e.Destroy();
+
+            context.DestroyEntity(e);
         }
+        //context.des
     }
 
     protected override bool Filter(GameEntity entity)

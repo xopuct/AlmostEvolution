@@ -9,7 +9,7 @@ public static class SensorHelper
         return cell.hasCell && cell.hasSensor && cell.hasPosition;
     }
 
-    public static void ReplaceRot(this GameEntity entity, float newRot)
+    public static void ReplaceRot(this GameEntity entity, int newRot)
     {
         entity.ReplaceSensor(entity.sensor.sensors, newRot);
     }
@@ -18,8 +18,7 @@ public static class SensorHelper
     {
         if (IsCell(cell))
         {
-            //return Field.Instance.GetObjectInPos(cell.position + cell.sensor.sensor);
-            return cell;
+            return Field.Instance.GetObjectInPos(cell.position + cell.sensor.sensor);
         }
         return null;
     }

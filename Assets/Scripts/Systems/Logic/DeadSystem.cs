@@ -18,12 +18,15 @@ public class DeadSystem : IExecuteSystem
     {
         foreach (var e in _group.GetEntities())
         {
-            if (e.cell.energy > LevelManager.Instance.LowLevelCorpseEnergy)
-                e.cell.energy = (int)(e.cell.energy * LevelManager.Instance.CorpseEnergyReduction);
-            else if (e.cell.energy > LevelManager.Instance.MinCorpseEnergy)
-                e.cell.energy -= 1;
-            if (e.cell.energy <= 0)
+            e.ReplaceColor(Color.gray);
+            var enegry = e.cell.energy;
+            if (enegry > LevelManager.Instance.LowLevelCorpseEnergy)
+                enegry = (int)(enegry * LevelManager.Instance.CorpseEnergyReduction);
+            else if (enegry > LevelManager.Instance.MinCorpseEnergy)
+                enegry -= 1;
+            if (enegry <= 0)
                 e.isDestroyed = true;
+            e.ReplaceEnergy(enegry);
 
             if (Field.Instance.IsFree(e.position + dir))
             {

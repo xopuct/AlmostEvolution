@@ -14,7 +14,8 @@ public class FieldSystem : ReactiveSystem<GameEntity>
 
     protected override void Execute(List<GameEntity> entities)
     {
-        //Field.Instance.
+        foreach (var e in entities)
+            Field.Instance.Move(e, e.position);
     }
 
     protected override bool Filter(GameEntity entity)

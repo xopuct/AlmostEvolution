@@ -12,7 +12,7 @@ public class CorpseController : MonoBehaviour
             if (cell)
             {
                 UnityEngine.Profiling.Profiler.BeginSample("TEst");
-                var isFree = Field.Instance.IsFree(cell.Pos + dir);
+                var isFree = FieldOld.Instance.IsFree(cell.Pos + dir);
                 UnityEngine.Profiling.Profiler.EndSample();
                 if (cell.energy > LevelManager.Instance.LowLevelCorpseEnergy)
                     cell.energy = (int)(cell.energy * LevelManager.Instance.CorpseEnergyReduction);

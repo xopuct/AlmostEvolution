@@ -1,19 +1,19 @@
-﻿using Entitas;
+﻿using System;
 using System.Collections.Generic;
 using UnityEngine;
 
-internal class Field : Singleton<Field>
+internal class FieldOld : Singleton<FieldOld>
 {
     //Dictionary<GameObject, Vector2i> gameObjectsPositions = new Dictionary<GameObject, Vector2i>();
     //Dictionary<Vector2i, GameObject> field = new Dictionary<Vector2i, GameObject>();
-    public GameEntity[,] field;
+    public DNA[,] field;
 
     public int Width = 100;
     public int Height = 60;
     protected override void Init()
     {
         base.Init();
-        field = new GameEntity[Width, Height];
+        field = new DNA[Width, Height];
     }
 
     public bool ValidateCoords(Vector2i pos)
@@ -40,29 +40,29 @@ internal class Field : Singleton<Field>
         {
             var hadSmth = field[pos.x, pos.y];
             field[pos.x, pos.y] = null;
-            return hadSmth != null;
+            return hadSmth;
         }
         else
             return false;
     }
 
-    public bool Move(GameEntity obj, Vector2i targetPosition)
+    public bool Move(DNA obj, Vector2i targetPosition)
     {
-        var originPos = obj.position;
+        var originPos = obj.Pos;
 
-        if (field[targetPosition.x, targetPosition.y] != null)
+        if (field[targetPosition.x, targetPosition.y])
             return false;
         else
         {
             if (ValidateCoords(originPos) && GetObjectInPos(originPos) == obj)
-                field[originPos.X, originPos.Y] = null;
+                field[originPos.x, originPos.y] = null;
 
             field[targetPosition.x, targetPosition.y] = obj;
             return true;
         }
     }
 
-    public GameEntity GetObjectInPos(Vector2i pos)
+    public DNA GetObjectInPos(Vector2i pos)
     {
         if (ValidateCoords(pos))
             return field[pos.x, pos.y];
@@ -88,6 +88,6 @@ internal class Field : Singleton<Field>
 
     public bool IsFree(Vector2i pos)
     {
-        return ValidateCoords(pos) && GetObjectInPos(pos) == null;
+        return ValidateCoords(pos) && !GetObjectInPos(pos);
     }
 }

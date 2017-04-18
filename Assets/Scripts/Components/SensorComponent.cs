@@ -20,11 +20,11 @@ public class SensorComponent : IComponent
     {
         get
         {
-            var index = (int)(rot / 45f);
+            var index = rot / 45;
             return sensors[index];
         }
 
     }
 
-    public float rot;
+    public int rot;
 }

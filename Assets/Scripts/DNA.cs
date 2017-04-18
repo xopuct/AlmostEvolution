@@ -48,7 +48,7 @@ public class DNA : MonoBehaviour
     public Vector2i Pos
     {
         get { return pos; }
-        set { if (Field.Instance.Move(this, value)) pos = value; }
+        set { if (FieldOld.Instance.Move(this, value)) pos = value; }
     }
 
     public void ChangeColor(float deltaR, float deltaG, float deltaB)

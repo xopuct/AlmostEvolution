@@ -4,14 +4,21 @@ using Entitas;
 using UnityEngine;
 
 
-public class EatSystem : ReactiveSystem<GameEntity>
+public class EatSystem : IExecuteSystem
 {
-    public EatSystem(Contexts contexts) : base(contexts.game) { }
-
-    protected override void Execute(List<GameEntity> entities)
+    private IGroup<GameEntity> _group;
+    public EatSystem(Contexts contexts)
     {
-        foreach (var e in entities)
+        _group = contexts.game.GetGroup(GameMatcher.Cell);
+    }
+
+    public void Execute()
+    {
+        foreach (var e in _group.GetEntities())
         {
+            if (e.isCorpse || e.cell.CurrentGene != 8)
+                continue;
+
             var obstacle = SensorHelper.GetEntityInEyeLook(e);
             if (obstacle == null)                                                  // Пусто
             {
@@ -43,15 +50,5 @@ public class EatSystem : ReactiveSystem<GameEntity>
                 e.ReplaceColor(e.color.ChangeColor(1, -1, 1));
             }
         }
-    }
-
-    protected override bool Filter(GameEntity entity)
-    {
-        return !entity.isCorpse && entity.hasCell && entity.cell.CurrentGene == 8;
-    }
-
-    protected override Collector<GameEntity> GetTrigger(IContext<GameEntity> context)
-    {
-        return context.CreateCollector(GameMatcher.Cell);
     }
 }
