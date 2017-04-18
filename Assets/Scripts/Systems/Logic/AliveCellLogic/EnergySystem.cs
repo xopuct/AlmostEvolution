@@ -13,6 +13,7 @@ public class EnergySystem : IExecuteSystem
     {
         _group = contexts.game.GetGroup(GameMatcher.Cell);
     }
+     
 
     public void Execute()
     {
@@ -21,18 +22,11 @@ public class EnergySystem : IExecuteSystem
             if (e.isCorpse || e.isDividing)
                 continue;
 
-            if (e.cell.controller > 63)
-            {
-                e.ReplaceCell(e.cell.genome, e.cell.energy - 1, e.cell.controller - 64);
-                continue;
-            }
-
-
-            e.ReplaceCell(e.cell.genome, e.cell.energy - 1, e.cell.controller + 2);
+            e.ReplaceEnergy(e.cell.energy - 1);
 
             if (e.cell.energy > LevelManager.Instance.EnergyToDivide)
             {
-                e.ReplaceCell(e.cell.genome, e.cell.energy / 2, e.cell.controller + 2);
+                e.ReplaceEnergy(e.cell.energy / 2);
                 e.isDividing = true;
             }
             if (e.cell.energy <= LevelManager.Instance.MinCorpseEnergy)
@@ -44,17 +38,16 @@ public class EnergySystem : IExecuteSystem
                 if (cnt > 63) cnt -= 64;
                 if (e.cell.energy < e.cell.genome[cnt] * 15)
                 {
-                    e.ReplaceCell(e.cell.genome, e.cell.energy, e.cell.controller + 2);
+                    e.ReplaceController(e.cell.controller + 2);
                 }
                 if (e.cell.energy >= e.cell.genome[cnt] * 15)
                 {
-                    e.ReplaceCell(e.cell.genome, e.cell.energy, e.cell.controller + 2);
+                    e.ReplaceController(e.cell.controller + 3);
                 }
             }
-            if (e.cell.CurrentGene > 12)
+            if (e.cell.CurrentGene > 11)
             {
-                e.ReplaceCell(e.cell.genome, e.cell.energy, e.cell.controller + e.cell.CurrentGene);
-                return;
+                e.ReplaceController(e.cell.controller + e.cell.CurrentGene);
             }
         }
     }

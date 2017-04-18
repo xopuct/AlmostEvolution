@@ -18,7 +18,10 @@ public static class SensorHelper
     {
         if (IsCell(cell))
         {
-            return Field.Instance.GetObjectInPos(cell.position + cell.sensor.sensor);
+            var entity = Field.Instance.GetObjectInPos(cell.position + cell.sensor.sensor);
+            if (entity != cell)
+                return entity;
+            return null;
         }
         return null;
     }

@@ -28,7 +28,7 @@ public class CellInitSystem : ReactiveSystem<GameEntity>
             }
 
             var cell = context.CreateEntity();
-            cell.AddCell(genome, LevelManager.Instance.StartEnergy, 0);
+            cell.AddCell(genome, e.newCell.energy, (int)Mathf.Repeat(e.newCell.controller, genome.Length));
             cell.AddColor(e.newCell.color);
             cell.AddSensor(new[]
             {

@@ -23,7 +23,7 @@ public class TurnSystem : IExecuteSystem
             rot += 45 * e.cell.CurrentGene;
             if (rot >= 360) rot = (int)Mathf.Repeat(rot, 360);
             e.ReplaceRot(rot);
-            e.ReplaceCell(e.cell.genome, e.cell.energy, e.cell.controller + 1);
+            e.ReplaceController(e.cell.controller + 1);
         }
     }
 }

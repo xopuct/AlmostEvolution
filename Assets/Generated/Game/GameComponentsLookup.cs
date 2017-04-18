@@ -9,20 +9,22 @@
 public static class GameComponentsLookup {
 
     public const int Cell = 0;
-    public const int Color = 1;
-    public const int Corpse = 2;
-    public const int Destroyed = 3;
-    public const int Dividing = 4;
-    public const int Killer = 5;
-    public const int NewCell = 6;
-    public const int Position = 7;
-    public const int Sensor = 8;
-    public const int View = 9;
+    public const int ChangeController = 1;
+    public const int Color = 2;
+    public const int Corpse = 3;
+    public const int Destroyed = 4;
+    public const int Dividing = 5;
+    public const int Killer = 6;
+    public const int NewCell = 7;
+    public const int Position = 8;
+    public const int Sensor = 9;
+    public const int View = 10;
 
-    public const int TotalComponents = 10;
+    public const int TotalComponents = 11;
 
     public static readonly string[] componentNames = {
         "Cell",
+        "ChangeController",
         "Color",
         "Corpse",
         "Destroyed",
@@ -36,6 +38,7 @@ public static class GameComponentsLookup {
 
     public static readonly System.Type[] componentTypes = {
         typeof(CellComponent),
+        typeof(ChangeControllerComponent),
         typeof(ColorComponent),
         typeof(CorpseComponent),
         typeof(DestroyedComponent),

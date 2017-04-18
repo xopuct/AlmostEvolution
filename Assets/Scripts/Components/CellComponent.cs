@@ -10,6 +10,7 @@ public class CellComponent : IComponent
 
     public int controller;
 
-    public int CurrentGene { get { return genome[controller % genome.Length]; } }
+    public int CurrentGene { get { return genome[controller]; } }
+    //public int NormalizedController { get { return controller % genome.Length; } }
 
 }

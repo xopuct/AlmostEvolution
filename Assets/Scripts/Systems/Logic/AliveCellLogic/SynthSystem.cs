@@ -18,7 +18,8 @@ public class SynthSystem : IExecuteSystem
         {
             if (e.isCorpse || e.cell.CurrentGene != 10)
                 continue;
-            e.ReplaceCell(e.cell.genome, e.cell.energy + (int)(e.position.Y * LevelManager.Instance.SynthMultipler), e.cell.controller + 1);
+            e.ReplaceEnergy(e.cell.energy + (int)(e.position.Y * LevelManager.Instance.SynthMultipler));
+            e.ReplaceController(e.cell.controller + 1);
             e.ReplaceColor(e.color.ChangeColor(-0.1f, 0.1f, -0.1f));
         }
     }

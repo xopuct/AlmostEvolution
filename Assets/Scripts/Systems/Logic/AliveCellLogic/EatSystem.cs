@@ -37,13 +37,22 @@ public class EatSystem : IExecuteSystem
                 var targetCalories = obstacle.cell.energy;
 
                 if (obstacle.isCorpse)
-                    e.ReplaceCell(e.cell.genome, e.cell.energy + targetCalories, e.cell.controller + 3);
+                {
+                    e.ReplaceEnergy(e.cell.energy + targetCalories);
+                    e.ReplaceController(e.cell.controller + 3);
+                }
                 else
                 {
                     if (CellHelper.CheckRelations(e, obstacle))
-                        e.ReplaceCell(e.cell.genome, e.cell.energy + targetCalories / 2, e.cell.controller + 4);
+                    {
+                        e.ReplaceController(e.cell.controller + 4);
+                        e.ReplaceEnergy(e.cell.energy + targetCalories / 2);
+                    }
                     else
-                        e.ReplaceCell(e.cell.genome, e.cell.energy + targetCalories, e.cell.controller + 5);
+                    {
+                        e.ReplaceController(e.cell.controller + 5);
+                        e.ReplaceEnergy(e.cell.energy + targetCalories);
+                    }
                 }
 
                 obstacle.isDestroyed = true;

@@ -10,6 +10,7 @@ public class FieldSystem : ReactiveSystem<GameEntity>
 
     public FieldSystem(Contexts contexts) : base(contexts.game)
     {
+        //contexts.game.GetGroup(GameMatcher.Position).OnEntityUpdated += ((e, o, p, f, d) => Field.Instance.Move(o as GameEntity, (o as GameEntity).position));
     }
 
     protected override void Execute(List<GameEntity> entities)

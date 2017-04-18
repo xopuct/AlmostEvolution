@@ -35,7 +35,7 @@ public static class CellHelper
 
     public static void ReplaceController(this GameEntity entity, int newController)
     {
-        entity.ReplaceCell(entity.cell.genome, entity.cell.energy, newController);
+        entity.AddChangeController(newController);
     }
 
     public static void ReplaceEnergy(this GameEntity entity, int newEnergy)

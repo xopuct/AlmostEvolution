@@ -11,20 +11,24 @@ public partial class GameEntity {
     public NewCellComponent newCell { get { return (NewCellComponent)GetComponent(GameComponentsLookup.NewCell); } }
     public bool hasNewCell { get { return HasComponent(GameComponentsLookup.NewCell); } }
 
-    public void AddNewCell(int[] newGenome, UnityEngine.Color newColor, int newRot, Vector2i newPos) {
+    public void AddNewCell(int[] newGenome, int newController, int newEnergy, UnityEngine.Color newColor, int newRot, Vector2i newPos) {
         var index = GameComponentsLookup.NewCell;
         var component = CreateComponent<NewCellComponent>(index);
         component.genome = newGenome;
+        component.controller = newController;
+        component.energy = newEnergy;
         component.color = newColor;
         component.rot = newRot;
         component.pos = newPos;
         AddComponent(index, component);
     }
 
-    public void ReplaceNewCell(int[] newGenome, UnityEngine.Color newColor, int newRot, Vector2i newPos) {
+    public void ReplaceNewCell(int[] newGenome, int newController, int newEnergy, UnityEngine.Color newColor, int newRot, Vector2i newPos) {
         var index = GameComponentsLookup.NewCell;
         var component = CreateComponent<NewCellComponent>(index);
         component.genome = newGenome;
+        component.controller = newController;
+        component.energy = newEnergy;
         component.color = newColor;
         component.rot = newRot;
         component.pos = newPos;
