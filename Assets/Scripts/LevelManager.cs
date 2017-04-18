@@ -26,7 +26,7 @@ public class LevelManager : Singleton<LevelManager>
     public StartConfiguration Configuration;
 
     Systems _systems;
-
+    private Contexts contexts;
 
     protected void Start()
     {
@@ -37,11 +37,11 @@ public class LevelManager : Singleton<LevelManager>
         //else
         //    Debug.LogError("Please setup cell configuration");
 
-        var contexts = Contexts.sharedInstance;
-//#if (!ENTITAS_DISABLE_VISUAL_DEBUGGING && UNITY_EDITOR)
-//        var contextObserver = new ContextObserver(contexts.game);
-//        Object.DontDestroyOnLoad(contextObserver.gameObject);
-//#endif
+        contexts = Contexts.sharedInstance;
+        //#if (!ENTITAS_DISABLE_VISUAL_DEBUGGING && UNITY_EDITOR)
+        //        var contextObserver = new ContextObserver(contexts.game);
+        //        Object.DontDestroyOnLoad(contextObserver.gameObject);
+        //#endif
         //contexts.SetAllContexts();
 
         _systems = createSystems(contexts);
@@ -74,7 +74,8 @@ public class LevelManager : Singleton<LevelManager>
 
         mutationsText.text = mutations.ToString();
         fpsText.text = (1 / Time.deltaTime).ToString();
-        //cellsCountText.text = Registry.Instance.GetCellsCount().ToString();
-        //corpseCountText.text = Registry.Instance.GetCorpsesCount().ToString();
+        var dead = contexts.game.GetGroup(GameMatcher.Corpse).count;
+        cellsCountText.text = (contexts.game.GetGroup(GameMatcher.Cell).count - dead).ToString();
+        corpseCountText.text = dead.ToString();
     }
 }
