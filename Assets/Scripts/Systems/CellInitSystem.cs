@@ -20,7 +20,7 @@ public class CellInitSystem : ReactiveSystem<GameEntity>
         foreach (var e in entities)
         {
 
-            var genome = e.newCell.genome;
+            var genome = (int[])e.newCell.genome.Clone();
             if (Random.Range(0, 3) == 1)
             {
                 LevelManager.Instance.mutations++;
