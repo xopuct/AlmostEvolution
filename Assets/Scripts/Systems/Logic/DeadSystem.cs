@@ -32,14 +32,7 @@ public class DeadSystem : IExecuteSystem
                 context.field.Clear(e.position);
             }
             e.ReplaceEnergy(enegry);
-
-            if (context.field.IsFree(e.position + dir))
-            {
-                Vector2i pos = e.position;
-                pos += dir;
-                context.field.Move(e, pos);
-                continue;
-            }
+            context.field.Move(e, e.position + dir);
         }
     }
 }

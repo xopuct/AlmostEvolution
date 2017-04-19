@@ -20,7 +20,7 @@ public class CellInitSystem : ReactiveSystem<GameEntity>
         foreach (var e in entities)
         {
             var proxy = context.field.GetObjectInPos(e.position);
-            if (proxy == e || proxy == null)
+            if (proxy == null || proxy.hasNewCell)
             {
                 var genome = (int[])e.newCell.genome.Clone();
                 if (Random.Range(0, 3) == 1)
@@ -34,6 +34,7 @@ public class CellInitSystem : ReactiveSystem<GameEntity>
                 cell.AddColor(e.newCell.color);
                 cell.AddSensor(SensorHelper.GetSensorValue(), e.newCell.rot);
                 cell.AddPosition(e.position.X, e.position.Y);
+                context.field.Clear(e.position);
                 context.field.Move(cell, cell.position);
             }
             else

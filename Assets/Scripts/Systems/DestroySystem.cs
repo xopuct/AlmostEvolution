@@ -27,6 +27,8 @@ public sealed class DestroySystem : ReactiveSystem<GameEntity>
     {
         foreach (var e in entities)
         {
+            //if (e.hasPosition && _context.field.GetObjectInPos(e.position) == e)
+                //_context.field.Clear(e.position);
             _context.DestroyEntity(e);
         }
     }
