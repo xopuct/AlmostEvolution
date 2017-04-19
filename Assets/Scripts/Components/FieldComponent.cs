@@ -97,6 +97,6 @@ public class FieldComponent : IComponent
 
     public bool IsFree(Vector2i pos)
     {
-        return GetObjectInPos(pos) == null;
+        return ValidateCoords(pos) && GetObjectInPos(pos) == null;
     }
 }
