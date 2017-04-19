@@ -43,7 +43,7 @@ public class LevelManager : Singleton<LevelManager>
         //        Object.DontDestroyOnLoad(contextObserver.gameObject);
         //#endif
         //contexts.SetAllContexts();
-
+        contexts.game.SetField(100, 60);
         _systems = createSystems(contexts);
         _systems.Initialize();
     }

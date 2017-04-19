@@ -7,10 +7,11 @@ using UnityEngine;
 public class MoveSystem : IExecuteSystem
 {
     private IGroup<GameEntity> _group;
-
+    GameContext context;
     public MoveSystem(Contexts contexts)
     {
         _group = contexts.game.GetGroup(GameMatcher.Cell);
+        context = contexts.game;
     }
 
     public void Execute()
@@ -21,13 +22,13 @@ public class MoveSystem : IExecuteSystem
                 continue;
             var obstacle = SensorHelper.GetEntityInEyeLook(e);
             var targetPos = e.position + e.sensor.sensor;
-            targetPos.x = (int)Mathf.Repeat(targetPos.x, Field.Instance.Width);
+            targetPos.x = (int)Mathf.Repeat(targetPos.x, context.field.Width);
 
             if (obstacle == null)
             {
-                if (Field.Instance.IsFree(targetPos))
+                if (context.field.IsFree(targetPos))
                 {
-                    Field.Instance.Move(e, e.position);
+                    context.field.Move(e, e.position);
                     e.ReplaceController(e.cell.controller + 1);
                 }
                 else
@@ -66,9 +67,9 @@ public class MoveSystem : IExecuteSystem
                 }
 
                 obstacle.isDestroyed = true;
-                Field.Instance.Clear(obstacle.position);
+                context.field.Clear(obstacle.position);
                 e.ReplaceColor(e.color.ChangeColor(1, -1, 1));
-                Field.Instance.Move(e, targetPos);
+                context.field.Move(e, targetPos);
             }
         }
     }

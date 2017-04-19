@@ -1,18 +1,20 @@
-﻿using Entitas;
-using System.Collections.Generic;
-using UnityEngine;
+﻿
+using Entitas;
+using Entitas.CodeGeneration.Attributes;
 
-internal class Field : Singleton<Field>
+[Unique]
+public class FieldComponent : IComponent
 {
     //Dictionary<GameObject, Vector2i> gameObjectsPositions = new Dictionary<GameObject, Vector2i>();
     //Dictionary<Vector2i, GameObject> field = new Dictionary<Vector2i, GameObject>();
-    public GameEntity[,] field;
+    GameEntity[,] field;
 
-    public int Width = 100;
-    public int Height = 60;
-    protected override void Init()
+    public int Width = 100; //{ get { return width; } }
+    public int Height = 60; //{ get { return height; } }
+    //int width = 100;
+    //int height = 60;
+    public FieldComponent()
     {
-        base.Init();
         field = new GameEntity[Width, Height];
     }
 

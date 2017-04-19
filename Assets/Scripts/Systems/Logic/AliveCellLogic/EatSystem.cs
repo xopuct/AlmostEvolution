@@ -7,9 +7,11 @@ using UnityEngine;
 public class EatSystem : IExecuteSystem
 {
     private IGroup<GameEntity> _group;
+    private GameContext context;
     public EatSystem(Contexts contexts)
     {
         _group = contexts.game.GetGroup(GameMatcher.Cell);
+        context = contexts.game;
     }
 
     public void Execute()
@@ -56,7 +58,7 @@ public class EatSystem : IExecuteSystem
                 }
 
                 obstacle.isDestroyed = true;
-                Field.Instance.Clear(obstacle.position);
+                context.field.Clear(obstacle.position);
                 e.ReplaceColor(e.color.ChangeColor(1, -1, 1));
             }
         }

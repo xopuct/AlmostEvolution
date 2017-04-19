@@ -8,10 +8,12 @@ public class DeadSystem : IExecuteSystem
 {
     readonly IGroup<GameEntity> _group;
     Vector2i dir = new Vector2i(0, -1);
+    GameContext context;
 
     public DeadSystem(Contexts contexts)
     {
         _group = contexts.game.GetGroup(GameMatcher.Corpse);
+        context = contexts.game;
     }
 
     public void Execute()
@@ -27,15 +29,15 @@ public class DeadSystem : IExecuteSystem
             if (enegry <= 0)
             {
                 e.isDestroyed = true;
-                Field.Instance.Clear(e.position);
+                context.field.Clear(e.position);
             }
             e.ReplaceEnergy(enegry);
 
-            if (Field.Instance.IsFree(e.position + dir))
+            if (context.field.IsFree(e.position + dir))
             {
                 Vector2i pos = e.position;
                 pos += dir;
-                Field.Instance.Move(e, pos);
+                context.field.Move(e, pos);
                 continue;
             }
         }
