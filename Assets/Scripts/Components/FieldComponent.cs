@@ -51,10 +51,10 @@ public class FieldComponent : IComponent
     public bool Move(GameEntity obj, Vector2i targetPosition)
     {
         var originPos = obj.position;
-
-        if (!IsFree(targetPosition))
+        if (!ValidateCoords(targetPosition))
             return false;
-        else
+
+        if (IsFree(targetPosition))
         {
             if (GetObjectInPos(originPos) == obj)
                 field[originPos.X, originPos.Y] = null;
@@ -63,6 +63,7 @@ public class FieldComponent : IComponent
             field[targetPosition.x, targetPosition.y] = obj;
             return true;
         }
+        return false;
     }
 
     public GameEntity GetObjectInPos(Vector2i pos)

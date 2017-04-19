@@ -5,6 +5,7 @@ using Entitas.CodeGeneration.Attributes;
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
+using System;
 
 public class PositionComponent : IComponent
 {
@@ -19,5 +20,10 @@ public class PositionComponent : IComponent
     public static implicit operator PositionComponent(Vector2i p)
     {
         return new PositionComponent() { X = p.x, Y = p.y };
+    }
+
+    public Vector2i ToVector2i()
+    {
+        return new Vector2i(X, Y);
     }
 }

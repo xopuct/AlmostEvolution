@@ -30,19 +30,9 @@ public class CellInitSystem : ReactiveSystem<GameEntity>
             var cell = context.CreateEntity();
             cell.AddCell(genome, e.newCell.energy, (int)Mathf.Repeat(e.newCell.controller, genome.Length));
             cell.AddColor(e.newCell.color);
-            cell.AddSensor(new[]
-            {
-                new Vector2i(0, 1),
-                new Vector2i(-1, 1),
-                new Vector2i(-1, 0),
-                new Vector2i(-1, -1),
-                new Vector2i(0, -1),
-                new Vector2i(1, -1),
-                new Vector2i(1, 0),
-                new Vector2i(1, 1)
-            }, e.newCell.rot);
+            cell.AddSensor(SensorHelper.GetSensorValue(), e.newCell.rot);
             cell.AddPosition(e.newCell.pos.x, e.newCell.pos.y);
-
+            context.field.Move(cell, e.newCell.pos);
             context.DestroyEntity(e);
         }
         //context.des

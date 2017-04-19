@@ -14,6 +14,21 @@ public static class SensorHelper
         entity.ReplaceSensor(entity.sensor.sensors, newRot);
     }
 
+    public static Vector2i[] GetSensorValue()
+    {
+        return new[]
+            {
+                new Vector2i(0, 1),
+                new Vector2i(-1, 1),
+                new Vector2i(-1, 0),
+                new Vector2i(-1, -1),
+                new Vector2i(0, -1),
+                new Vector2i(1, -1),
+                new Vector2i(1, 0),
+                new Vector2i(1, 1)
+            };
+    }
+
     public static GameEntity GetEntityInEyeLook(GameEntity cell)
     {
         if (IsCell(cell))

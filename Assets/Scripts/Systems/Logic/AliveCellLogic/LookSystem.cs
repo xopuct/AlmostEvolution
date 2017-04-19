@@ -24,27 +24,28 @@ public class LookSystem : IExecuteSystem
             if (obstacle == null)                                                  // Пусто
             {
                 e.ReplaceController(e.cell.controller + 1);
-                break;
             }
-
-            //if (cell.Obstacle.layer == wallLayer)    // стена
-            //{
-            //    e.ReplaceController(e.cell.controller + 1);
-            //    return;
-            //}
-            //else
-            if (CellHelper.IsCell(obstacle))     // бот
+            else
             {
-                if (obstacle.isCorpse)
+                //if (cell.Obstacle.layer == wallLayer)    // стена
+                //{
+                //    e.ReplaceController(e.cell.controller + 1);
+                //    return;
+                //}
+                //else
+                if (CellHelper.IsCell(obstacle))     // бот
                 {
-                    e.ReplaceController(e.cell.controller + 3);
+                    if (obstacle.isCorpse)
+                    {
+                        e.ReplaceController(e.cell.controller + 3);
 
-                }
-                else
-                {
-                    if (CellHelper.CheckRelations(e, obstacle)) e.ReplaceController(e.cell.controller + 4);
+                    }
+                    else
+                    {
+                        if (CellHelper.CheckRelations(e, obstacle)) e.ReplaceController(e.cell.controller + 4);
 
-                    else e.ReplaceController(e.cell.controller + 5);
+                        else e.ReplaceController(e.cell.controller + 5);
+                    }
                 }
             }
         }

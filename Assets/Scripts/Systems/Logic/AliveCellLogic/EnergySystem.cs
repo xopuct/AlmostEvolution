@@ -13,7 +13,7 @@ public class EnergySystem : IExecuteSystem
     {
         _group = contexts.game.GetGroup(GameMatcher.Cell);
     }
-     
+
 
     public void Execute()
     {
@@ -29,10 +29,10 @@ public class EnergySystem : IExecuteSystem
                 e.ReplaceEnergy(e.cell.energy / 2);
                 e.isDividing = true;
             }
-            if (e.cell.energy <= LevelManager.Instance.MinCorpseEnergy)
+            else if (e.cell.energy <= LevelManager.Instance.MinCorpseEnergy)
                 e.isCorpse = true;
 
-            if (e.cell.CurrentGene == 11)
+            else if (e.cell.CurrentGene == 11)
             {
                 int cnt = e.cell.controller + 1;
                 if (cnt > 63) cnt -= 64;
@@ -45,7 +45,7 @@ public class EnergySystem : IExecuteSystem
                     e.ReplaceController(e.cell.controller + 3);
                 }
             }
-            if (e.cell.CurrentGene > 11)
+            else if(e.cell.CurrentGene > 11)
             {
                 e.ReplaceController(e.cell.controller + e.cell.CurrentGene);
             }

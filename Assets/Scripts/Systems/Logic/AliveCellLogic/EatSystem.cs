@@ -25,41 +25,42 @@ public class EatSystem : IExecuteSystem
             if (obstacle == null)                                                  // Пусто
             {
                 e.ReplaceController(e.cell.controller + 1);
-                break;
             }
-
-            //if (cell.Obstacle.layer == wallLayer)    // стена
-            //{
-            //    e.ReplaceController(e.cell.controller + 1);
-            //    return;
-            //}
-            //else
-            if (CellHelper.IsCell(obstacle))     // бот
+            else
             {
-                var targetCalories = obstacle.cell.energy;
+                //if (cell.Obstacle.layer == wallLayer)    // стена
+                //{
+                //    e.ReplaceController(e.cell.controller + 1);
+                //    return;
+                //}
+                //else
+                if (CellHelper.IsCell(obstacle))     // бот
+                {
+                    var targetCalories = obstacle.cell.energy;
 
-                if (obstacle.isCorpse)
-                {
-                    e.ReplaceEnergy(e.cell.energy + targetCalories);
-                    e.ReplaceController(e.cell.controller + 3);
-                }
-                else
-                {
-                    if (CellHelper.CheckRelations(e, obstacle))
+                    if (obstacle.isCorpse)
                     {
-                        e.ReplaceController(e.cell.controller + 4);
-                        e.ReplaceEnergy(e.cell.energy + targetCalories / 2);
+                        e.ReplaceEnergy(e.cell.energy + targetCalories);
+                        e.ReplaceController(e.cell.controller + 3);
                     }
                     else
                     {
-                        e.ReplaceController(e.cell.controller + 5);
-                        e.ReplaceEnergy(e.cell.energy + targetCalories);
+                        if (CellHelper.CheckRelations(e, obstacle))
+                        {
+                            e.ReplaceController(e.cell.controller + 4);
+                            e.ReplaceEnergy(e.cell.energy + targetCalories / 2);
+                        }
+                        else
+                        {
+                            e.ReplaceController(e.cell.controller + 5);
+                            e.ReplaceEnergy(e.cell.energy + targetCalories);
+                        }
                     }
-                }
 
-                obstacle.isDestroyed = true;
-                context.field.Clear(obstacle.position);
-                e.ReplaceColor(e.color.ChangeColor(1, -1, 1));
+                    obstacle.isDestroyed = true;
+                    context.field.Clear(obstacle.position);
+                    e.ReplaceColor(e.color.ChangeColor(1, -1, 1));
+                }
             }
         }
     }
