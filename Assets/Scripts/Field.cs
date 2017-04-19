@@ -38,7 +38,7 @@ internal class Field : Singleton<Field>
     {
         if (ValidateCoords(pos))
         {
-            var hadSmth = field[pos.x, pos.y];
+            var hadSmth = GetObjectInPos(pos);
             field[pos.x, pos.y] = null;
             return hadSmth != null;
         }
@@ -50,13 +50,14 @@ internal class Field : Singleton<Field>
     {
         var originPos = obj.position;
 
-        if (field[targetPosition.x, targetPosition.y] != null)
+        if (!IsFree(targetPosition))
             return false;
         else
         {
-            if (ValidateCoords(originPos) && GetObjectInPos(originPos) == obj)
+            if (GetObjectInPos(originPos) == obj)
                 field[originPos.X, originPos.Y] = null;
 
+            obj.ReplacePosition(targetPosition.x, targetPosition.y);
             field[targetPosition.x, targetPosition.y] = obj;
             return true;
         }
@@ -65,7 +66,12 @@ internal class Field : Singleton<Field>
     public GameEntity GetObjectInPos(Vector2i pos)
     {
         if (ValidateCoords(pos))
-            return field[pos.x, pos.y];
+        {
+            var ret = field[pos.x, pos.y];
+            //if (ret != null && ret.isDestroyed)
+            //    return null;
+            return ret;
+        }
         return null;
     }
 
@@ -88,6 +94,6 @@ internal class Field : Singleton<Field>
 
     public bool IsFree(Vector2i pos)
     {
-        return ValidateCoords(pos) && GetObjectInPos(pos) == null;
+        return GetObjectInPos(pos) == null;
     }
 }

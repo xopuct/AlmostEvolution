@@ -25,14 +25,17 @@ public class DeadSystem : IExecuteSystem
             else if (enegry > LevelManager.Instance.MinCorpseEnergy)
                 enegry -= 1;
             if (enegry <= 0)
+            {
                 e.isDestroyed = true;
+                Field.Instance.Clear(e.position);
+            }
             e.ReplaceEnergy(enegry);
 
             if (Field.Instance.IsFree(e.position + dir))
             {
                 Vector2i pos = e.position;
                 pos += dir;
-                e.ReplacePosition(pos.x, pos.y);
+                Field.Instance.Move(e, pos);
                 continue;
             }
         }

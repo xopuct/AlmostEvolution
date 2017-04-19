@@ -27,7 +27,7 @@ public class MoveSystem : IExecuteSystem
             {
                 if (Field.Instance.IsFree(targetPos))
                 {
-                    e.ReplacePosition(targetPos.x, targetPos.y);
+                    Field.Instance.Move(e, e.position);
                     e.ReplaceController(e.cell.controller + 1);
                 }
                 else
@@ -66,8 +66,9 @@ public class MoveSystem : IExecuteSystem
                 }
 
                 obstacle.isDestroyed = true;
+                Field.Instance.Clear(obstacle.position);
                 e.ReplaceColor(e.color.ChangeColor(1, -1, 1));
-                e.ReplacePosition(targetPos.x, targetPos.y);
+                Field.Instance.Move(e, targetPos);
             }
         }
     }

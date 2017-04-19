@@ -14,7 +14,7 @@ public class LogicSystems : Feature
         Add(new MoveSystem(context));
         Add(new SynthSystem(context));
         Add(new DeadSystem(context));
-        Add(new FieldSystem(context));
+        //Add(new FieldSystem(context));
         Add(new UpdateControllerSystem(context));
     }
 }
