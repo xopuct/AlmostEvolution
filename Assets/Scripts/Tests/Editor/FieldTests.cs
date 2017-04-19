@@ -65,6 +65,21 @@ public class FieldTests : TestBase
         Assert.AreEqual(context.field.GetObjectInPos(new Vector2i(0, 0)), null);
     }
 
+    [Test]
+    public void MoveToOut()
+    {
+        Assert.AreEqual(false, context.field.IsFree(new Vector2i(-1, 0)));
+        Assert.AreEqual(false, context.field.IsFree(new Vector2i(0, -1)));
+        Assert.AreEqual(false, context.field.IsFree(new Vector2i(-1, -1)));
+
+        var width = context.field.Width;
+        var height = context.field.Height;
+
+        Assert.AreEqual(false, context.field.IsFree(new Vector2i(width, 5)));
+        Assert.AreEqual(false, context.field.IsFree(new Vector2i(5, height)));
+        Assert.AreEqual(false, context.field.IsFree(new Vector2i(width, height)));
+    }
+
     //[Test]
     //public void ProjectileCollision()
     //{
