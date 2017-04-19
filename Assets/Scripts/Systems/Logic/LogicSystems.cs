@@ -4,17 +4,18 @@
 public class LogicSystems : Feature
 {
 
-    public LogicSystems(Contexts context)
+    public LogicSystems(Contexts contexts)
     {
-        Add(new EnergySystem(context));
-        Add(new DivideSystem(context));
-        Add(new LookSystem(context));
-        Add(new TurnSystem(context));
-        Add(new EatSystem(context));
-        Add(new MoveSystem(context));
-        Add(new SynthSystem(context));
-        Add(new DeadSystem(context));
+        Add(new EnergySystem(contexts));
+        Add(new DivideSystem(contexts));
+        Add(new CellInitSystem(contexts));
+        Add(new LookSystem(contexts));
+        Add(new TurnSystem(contexts));
+        Add(new EatSystem(contexts));
+        Add(new MoveSystem(contexts));
+        Add(new SynthSystem(contexts));
+        Add(new DeadSystem(contexts));
         //Add(new FieldSystem(context));
-        Add(new UpdateControllerSystem(context));
+        Add(new UpdateControllerSystem(contexts));
     }
 }

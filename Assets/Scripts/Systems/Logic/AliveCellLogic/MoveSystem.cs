@@ -61,8 +61,8 @@ public class MoveSystem : IExecuteSystem
                     }
 
                     obstacle.isDestroyed = true;
-                    context.field.Clear(obstacle.position);
                     e.ReplaceColor(e.color.ChangeColor(1, -1, 1));
+                    context.field.Clear(obstacle.position);
                     context.field.Move(e, targetPos);
                 }
             }

@@ -19,23 +19,26 @@ public class CellInitSystem : ReactiveSystem<GameEntity>
     {
         foreach (var e in entities)
         {
-
-            var genome = (int[])e.newCell.genome.Clone();
-            if (Random.Range(0, 3) == 1)
+            if (context.field.IsFree(e.newCell.pos) == false)
+                Debug.LogError("WTF");
+            else
             {
-                LevelManager.Instance.mutations++;
-                genome[Random.Range(0, 63)] = Random.Range(0, 63);
-            }
+                var genome = (int[])e.newCell.genome.Clone();
+                if (Random.Range(0, 3) == 1)
+                {
+                    LevelManager.Instance.mutations++;
+                    genome[Random.Range(0, 63)] = Random.Range(0, 63);
+                }
 
-            var cell = context.CreateEntity();
-            cell.AddCell(genome, e.newCell.energy, (int)Mathf.Repeat(e.newCell.controller, genome.Length));
-            cell.AddColor(e.newCell.color);
-            cell.AddSensor(SensorHelper.GetSensorValue(), e.newCell.rot);
-            cell.AddPosition(e.newCell.pos.x, e.newCell.pos.y);
-            context.field.Move(cell, e.newCell.pos);
+                var cell = context.CreateEntity();
+                cell.AddCell(genome, e.newCell.energy, (int)Mathf.Repeat(e.newCell.controller, genome.Length));
+                cell.AddColor(e.newCell.color);
+                cell.AddSensor(SensorHelper.GetSensorValue(), e.newCell.rot);
+                cell.AddPosition(e.newCell.pos.x, e.newCell.pos.y);
+                context.field.Move(cell, e.newCell.pos);
+            }
             context.DestroyEntity(e);
         }
-        //context.des
     }
 
     protected override bool Filter(GameEntity entity)

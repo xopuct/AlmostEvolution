@@ -26,13 +26,16 @@ public class DivideSystem : ReactiveSystem<GameEntity>
                 }
             }
             if (e.isDividing)
+            {
                 e.isCorpse = true;
+                e.isDividing = false;
+            }
         }
     }
 
     protected override bool Filter(GameEntity entity)
     {
-        return entity.isDividing;
+        return entity.isDividing && !entity.isCorpse && !entity.isDestroyed;
     }
 
     protected override Collector<GameEntity> GetTrigger(IContext<GameEntity> context)

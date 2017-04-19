@@ -38,6 +38,8 @@ public class FieldTests : TestBase
         Assert.AreEqual(context.field.GetObjectInPos(new Vector2i(0, 0)), null);
     }
 
+
+
     [Test]
     public void MoveToLockedPointTest()
     {

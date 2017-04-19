@@ -56,7 +56,6 @@ public class LevelManager : Singleton<LevelManager>
 
             //// Logic
             .Add(new LogicSystems(contexts))
-            .Add(new CellInitSystem(contexts))
             //// Update
             //.Add(new GameSystems(contexts))
 
