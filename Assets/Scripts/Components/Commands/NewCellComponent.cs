@@ -10,5 +10,4 @@ public class NewCellComponent : IComponent
     public int energy;
     public Color color;
     public int rot;
-    public Vector2i pos;
 }

@@ -19,9 +19,8 @@ public class CellInitSystem : ReactiveSystem<GameEntity>
     {
         foreach (var e in entities)
         {
-            if (context.field.IsFree(e.newCell.pos) == false)
-                Debug.LogError("WTF");
-            else
+            var proxy = context.field.GetObjectInPos(e.position);
+            if (proxy == e || proxy == null)
             {
                 var genome = (int[])e.newCell.genome.Clone();
                 if (Random.Range(0, 3) == 1)
@@ -34,16 +33,20 @@ public class CellInitSystem : ReactiveSystem<GameEntity>
                 cell.AddCell(genome, e.newCell.energy, (int)Mathf.Repeat(e.newCell.controller, genome.Length));
                 cell.AddColor(e.newCell.color);
                 cell.AddSensor(SensorHelper.GetSensorValue(), e.newCell.rot);
-                cell.AddPosition(e.newCell.pos.x, e.newCell.pos.y);
-                context.field.Move(cell, e.newCell.pos);
+                cell.AddPosition(e.position.X, e.position.Y);
+                context.field.Move(cell, cell.position);
             }
-            context.DestroyEntity(e);
+            else
+                Debug.LogError("WTF");
+            e.RemoveNewCell();
+            e.isDestroyed = true;
+            //context.DestroyEntity(e);
         }
     }
 
     protected override bool Filter(GameEntity entity)
     {
-        return entity.hasNewCell;
+        return entity.hasNewCell && entity.hasPosition && !entity.isDestroyed;
     }
 
     protected override Collector<GameEntity> GetTrigger(IContext<GameEntity> context)
