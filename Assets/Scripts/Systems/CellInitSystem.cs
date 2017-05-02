@@ -34,6 +34,7 @@ public class CellInitSystem : ReactiveSystem<GameEntity>
                 cell.AddColor(e.newCell.color);
                 cell.AddSensor(SensorHelper.GetSensorValue(), e.newCell.rot);
                 cell.AddPosition(e.position.X, e.position.Y);
+                cell.AddID(cell.creationIndex);
                 context.field.Clear(e.position);
                 context.field.Move(cell, cell.position);
             }

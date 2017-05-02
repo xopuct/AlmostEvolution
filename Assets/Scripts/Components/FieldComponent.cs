@@ -56,7 +56,8 @@ public class FieldComponent : IComponent
 
         if (IsFree(targetPosition))
         {
-            if (GetObjectInPos(originPos) == obj)
+            var objInOriginalPos = GetObjectInPos(originPos);
+            if (objInOriginalPos != null && objInOriginalPos.hasID && objInOriginalPos.iD == obj.iD)
                 field[originPos.X, originPos.Y] = null;
 
             obj.ReplacePosition(targetPosition.x, targetPosition.y);
