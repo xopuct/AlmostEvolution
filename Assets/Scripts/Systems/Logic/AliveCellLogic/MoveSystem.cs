@@ -22,11 +22,11 @@ public class MoveSystem : IExecuteSystem
                 continue;
             var obstacle = SensorHelper.GetEntityInEyeLook(e);
             var targetPos = e.position + e.sensor.sensor;
-            targetPos.x = (int)Mathf.Repeat(targetPos.x, context.field.Width);
+            targetPos.x = (int)Mathf.Repeat(targetPos.x, context.fieldWidth);
 
             if (obstacle == null)
             {
-                context.field.Move(e, targetPos);
+                context.Move(e, targetPos);
                 e.ReplaceController(e.cell.controller + 1);
             }
             else
@@ -61,9 +61,8 @@ public class MoveSystem : IExecuteSystem
                     }
 
                     obstacle.isDestroyed = true;
-                    e.ReplaceColor(e.color.ChangeColor(1, -1, 1));
-                    context.field.Clear(obstacle.position);
-                    context.field.Move(e, targetPos);
+                    e.ReplaceColor(e.color.ChangeColor(1, -1, 1)); 
+                    context.Move(e, targetPos);
                 }
             }
         }

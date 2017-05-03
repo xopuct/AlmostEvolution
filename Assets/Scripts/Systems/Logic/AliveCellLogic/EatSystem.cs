@@ -58,7 +58,6 @@ public class EatSystem : IExecuteSystem
                     }
 
                     obstacle.isDestroyed = true;
-                    context.field.Clear(obstacle.position);
                     e.ReplaceColor(e.color.ChangeColor(1, -1, 1));
                 }
             }

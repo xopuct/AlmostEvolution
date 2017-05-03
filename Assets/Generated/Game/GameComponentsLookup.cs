@@ -14,15 +14,14 @@ public static class GameComponentsLookup {
     public const int Corpse = 3;
     public const int Destroyed = 4;
     public const int Dividing = 5;
-    public const int Field = 6;
-    public const int ID = 7;
-    public const int Killer = 8;
-    public const int NewCell = 9;
-    public const int Position = 10;
-    public const int Sensor = 11;
-    public const int View = 12;
+    public const int ID = 6;
+    public const int Killer = 7;
+    public const int NewCell = 8;
+    public const int Position = 9;
+    public const int Sensor = 10;
+    public const int View = 11;
 
-    public const int TotalComponents = 13;
+    public const int TotalComponents = 12;
 
     public static readonly string[] componentNames = {
         "Cell",
@@ -31,7 +30,6 @@ public static class GameComponentsLookup {
         "Corpse",
         "Destroyed",
         "Dividing",
-        "Field",
         "ID",
         "Killer",
         "NewCell",
@@ -47,7 +45,6 @@ public static class GameComponentsLookup {
         typeof(CorpseComponent),
         typeof(DestroyedComponent),
         typeof(DividingComponent),
-        typeof(FieldComponent),
         typeof(IDComponent),
         typeof(KillerComponent),
         typeof(NewCellComponent),

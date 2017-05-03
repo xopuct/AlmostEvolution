@@ -19,27 +19,23 @@ public class CellInitSystem : ReactiveSystem<GameEntity>
     {
         foreach (var e in entities)
         {
-            var proxy = context.field.GetObjectInPos(e.position);
-            if (proxy == null || proxy.hasNewCell)
+            var genome = (int[])e.newCell.genome.Clone();
+            if (Random.Range(0, 3) == 1)
             {
-                var genome = (int[])e.newCell.genome.Clone();
-                if (Random.Range(0, 3) == 1)
-                {
-                    LevelManager.Instance.mutations++;
-                    genome[Random.Range(0, 63)] = Random.Range(0, 63);
-                }
-
-                var cell = context.CreateEntity();
-                cell.AddCell(genome, e.newCell.energy, (int)Mathf.Repeat(e.newCell.controller, genome.Length));
-                cell.AddColor(e.newCell.color);
-                cell.AddSensor(SensorHelper.GetSensorValue(), e.newCell.rot);
-                cell.AddPosition(e.position.X, e.position.Y);
-                cell.AddID(cell.creationIndex);
-                context.field.Clear(e.position);
-                context.field.Move(cell, cell.position);
+                LevelManager.Instance.mutations++;
+                genome[Random.Range(0, 63)] = Random.Range(0, 63);
             }
-            else
-                Debug.LogError("WTF");
+
+            var cell = context.CreateEntity();
+            cell.AddCell(genome, e.newCell.energy, (int)Mathf.Repeat(e.newCell.controller, genome.Length));
+            cell.AddColor(e.newCell.color);
+            cell.AddSensor(SensorHelper.GetSensorValue(), e.newCell.rot);
+            var pos = (Vector2i)e.position;
+            e.RemovePosition();
+            cell.AddPosition(pos.x, pos.y);
+            cell.AddID(cell.creationIndex);
+            context.Move(cell, cell.position);
+
             e.RemoveNewCell();
             e.isDestroyed = true;
             //context.DestroyEntity(e);

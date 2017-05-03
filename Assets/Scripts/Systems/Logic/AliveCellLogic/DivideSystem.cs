@@ -18,12 +18,12 @@ public class DivideSystem : ReactiveSystem<GameEntity>
             for (int i = e.sensor.sensors.Length - 1; i >= 0; i--)
             {
                 var newCellPos = e.position + e.sensor.sensors[i];
-                if (context.field.IsFree(newCellPos))
+                if (context.IsFree(newCellPos))
                 {
                     var newCell = context.CreateEntity();
                     newCell.AddNewCell(e.cell.genome, e.cell.controller, e.cell.energy, e.color.Color, e.sensor.rot);
                     newCell.AddPosition(newCellPos.x, newCellPos.y);
-                    context.field.Move(newCell, newCellPos);
+                    context.Move(newCell, newCellPos);
                     e.isDividing = false;
                     break;
                 }

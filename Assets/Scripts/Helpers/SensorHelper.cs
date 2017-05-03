@@ -33,7 +33,9 @@ public static class SensorHelper
     {
         if (IsCell(cell))
         {
-            var entity = Contexts.sharedInstance.game.field.GetObjectInPos(cell.position + cell.sensor.sensor);
+
+            var entity = Contexts.sharedInstance.game.GetCellByPosition(cell.position + cell.sensor.sensor);
+            //var entity = Contexts.sharedInstance.game.field.GetObjectInPos(cell.position + cell.sensor.sensor);
             //if (entity != cell)
             return entity;
             //return null;

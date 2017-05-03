@@ -29,10 +29,9 @@ public class DeadSystem : IExecuteSystem
             if (enegry <= 0)
             {
                 e.isDestroyed = true;
-                context.field.Clear(e.position);
             }
             e.ReplaceEnergy(enegry);
-            context.field.Move(e, e.position + dir);
+            context.Move(e, e.position + dir);
         }
     }
 }

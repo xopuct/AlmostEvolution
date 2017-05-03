@@ -14,7 +14,7 @@ public class TestBase
     {
         contexts = new Contexts();
         Contexts.sharedInstance = contexts;
-        contexts.game.SetField(100, 60);
+        //contexts.game.SetField(100, 60);
         context = contexts.game;
     }
 }
