@@ -25,8 +25,8 @@ public class UpdateControllerSystem : ReactiveSystem<GameEntity>
         return entity.hasChangeController && entity.hasCell;
     }
 
-    protected override Collector<GameEntity> GetTrigger(IContext<GameEntity> context)
+    protected override ICollector<GameEntity> GetTrigger(IContext<GameEntity> context)
     {
-        return context.CreateCollector(GameMatcher.ChangeController, GroupEvent.Added);
+        return context.CreateCollector(GameMatcher.ChangeController.Added());
     }
 }

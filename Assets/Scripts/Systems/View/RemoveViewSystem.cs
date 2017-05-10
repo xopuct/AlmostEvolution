@@ -9,7 +9,7 @@ public sealed class RemoveViewSystem : ReactiveSystem<GameEntity>
     {
     }
 
-    protected override Collector<GameEntity> GetTrigger(IContext<GameEntity> context)
+    protected override ICollector<GameEntity> GetTrigger(IContext<GameEntity> context)
     {
         return new Collector<GameEntity>(
             new IGroup<GameEntity>[] {

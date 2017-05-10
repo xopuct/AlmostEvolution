@@ -1,4 +1,5 @@
 ﻿
+using System;
 using System.Collections.Generic;
 using Entitas;
 
@@ -13,11 +14,10 @@ public sealed class DestroySystem : ReactiveSystem<GameEntity>
         _context = contexts.game;
     }
 
-    protected override Collector<GameEntity> GetTrigger(IContext<GameEntity> context)
+    protected override ICollector<GameEntity> GetTrigger(IContext<GameEntity> context)
     {
         return context.CreateCollector(GameMatcher.Destroyed);
     }
-
     protected override bool Filter(GameEntity entity)
     {
         return entity.isDestroyed;
@@ -29,7 +29,8 @@ public sealed class DestroySystem : ReactiveSystem<GameEntity>
         {
             //if (e.hasPosition && _context.field.GetObjectInPos(e.position) == e)
                 //_context.field.Clear(e.position);
-            _context.DestroyEntity(e);
+            //_context.DestroyEntity(e);
+            e.Destroy();
         }
     }
 }

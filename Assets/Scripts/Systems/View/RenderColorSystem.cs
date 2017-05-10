@@ -9,7 +9,7 @@ public sealed class RenderColorSystem : ReactiveSystem<GameEntity>
     {
     }
 
-    protected override Collector<GameEntity> GetTrigger(IContext<GameEntity> context)
+    protected override ICollector<GameEntity> GetTrigger(IContext<GameEntity> context)
     {
         return context.CreateCollector(GameMatcher.Color);
     }
