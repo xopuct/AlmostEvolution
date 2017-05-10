@@ -31,7 +31,7 @@ public class AddViewSystem : ReactiveSystem<GameEntity>
             GameObject gameObject = null;
             try
             {
-                gameObject = UnityEngine.Object.Instantiate(assetName);
+                gameObject = GameObjectPool.Instance.Instantiate(assetName, Vector3.zero, Quaternion.identity);
             }
             catch (Exception)
             {

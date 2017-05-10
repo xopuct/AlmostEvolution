@@ -33,7 +33,10 @@ public sealed class RemoveViewSystem : ReactiveSystem<GameEntity>
     {
         foreach (var e in entities)
         {
-            Object.Destroy(e.view.gameObject);
+            bool shouldDestroy = false;
+            GameObjectPool.Instance.Destroy(e.view.gameObject, out shouldDestroy);
+            if (shouldDestroy)
+                Object.Destroy(e.view.gameObject);
             e.RemoveView();
         }
     }
