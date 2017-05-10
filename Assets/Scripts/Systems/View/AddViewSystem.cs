@@ -6,9 +6,11 @@ using System;
 
 public class AddViewSystem : ReactiveSystem<GameEntity>
 {
+    Dictionary<string, GameObject> prototypes;
 
     public AddViewSystem(Contexts contexts) : base(contexts.game)
     {
+        prototypes = new Dictionary<string, GameObject>();
     }
 
     protected override ICollector<GameEntity> GetTrigger(IContext<GameEntity> context)
@@ -22,12 +24,22 @@ public class AddViewSystem : ReactiveSystem<GameEntity>
     }
 
     readonly Transform _viewContainer = new GameObject("Views").transform;
+    GameObject GetPrototype(string name)
+    {
+        GameObject prototype;
+        if (!prototypes.TryGetValue(name, out prototype))
+        {
+            prototype = Resources.Load<GameObject>(name);
+            prototypes[name] = prototype;
+        }
+        return prototype;
+    }
 
     protected override void Execute(List<GameEntity> entities)
     {
         foreach (var e in entities)
         {
-            var assetName = Resources.Load<GameObject>("cell");
+            var assetName = GetPrototype("cell");
             GameObject gameObject = null;
             try
             {
