@@ -32,8 +32,7 @@ public class CellInitSystem : ReactiveSystem<GameEntity>
             cell.AddSensor(SensorHelper.GetSensorValue(), e.newCell.rot);
             var pos = (Vector2i)e.position;
             e.RemovePosition();
-            cell.AddPosition(pos.x, pos.y);
-            cell.AddID(cell.creationIndex);
+            cell.AddPosition(pos.x, pos.y); 
             context.Move(cell, cell.position);
 
             e.RemoveNewCell();
