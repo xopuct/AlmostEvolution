@@ -18,15 +18,17 @@ public class MoveSystem : IExecuteSystem
     {
         foreach (var e in _group.GetEntities())
         {
-            if (e.isCorpse || e.cell.CurrentGene != 9)
+            if (e.isCorpse || (e.cell.CurrentGene != 9 && e.cell.CurrentGene != 8))
                 continue;
+            var move = e.cell.CurrentGene == 9;
             var obstacle = SensorHelper.GetEntityInEyeLook(e);
             var targetPos = e.position + e.sensor.sensor;
             targetPos.x = (int)Mathf.Repeat(targetPos.x, context.fieldWidth);
 
             if (obstacle == null)
             {
-                context.Move(e, targetPos);
+                if (move)
+                    context.Move(e, targetPos);
                 e.ReplaceController(e.cell.controller + 1);
             }
             else
@@ -61,8 +63,9 @@ public class MoveSystem : IExecuteSystem
                     }
 
                     obstacle.isDestroyed = true;
-                    e.ReplaceColor(e.color.ChangeColor(1, -1, 1)); 
-                    context.Move(e, targetPos);
+                    e.ReplaceColor(e.color.ChangeColor(1, -1, 1));
+                    if (move)
+                        context.Move(e, targetPos);
                 }
             }
         }
