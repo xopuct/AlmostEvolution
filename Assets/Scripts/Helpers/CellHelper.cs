@@ -42,4 +42,20 @@ public static class CellHelper
     {
         entity.ReplaceCell(entity.cell.genome, newEnergy, entity.cell.controller);
     }
+
+    public static void ProduceNewCell(this GameContext context, int[] sourceGenome, int controller, int energy, Color color, int rot, Vector2i position)
+    {
+        var genome = (int[])sourceGenome.Clone();
+        if (Random.Range(0, 3) == 1)
+        {
+            LevelManager.Instance.mutations++;
+            genome[Random.Range(0, 63)] = Random.Range(0, 63);
+        }
+
+        var cell = context.CreateEntity();
+        cell.AddCell(genome, energy, (int)Mathf.Repeat(controller, genome.Length));
+        cell.AddColor(color);
+        cell.AddSensor(SensorHelper.GetSensorValue(), rot);
+        cell.AddPosition(position.x, position.y);
+    }
 }

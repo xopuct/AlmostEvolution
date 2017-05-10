@@ -8,14 +8,12 @@ public class LogicSystems : Feature
     {
         Add(new EnergySystem(contexts));
         Add(new DivideSystem(contexts));
-        Add(new CellInitSystem(contexts));
         Add(new LookSystem(contexts));
         Add(new TurnSystem(contexts));
         Add(new EatSystem(contexts));
         Add(new MoveSystem(contexts));
         Add(new SynthSystem(contexts));
         Add(new DeadSystem(contexts));
-        //Add(new FieldSystem(context));
         Add(new UpdateControllerSystem(contexts));
     }
 }
