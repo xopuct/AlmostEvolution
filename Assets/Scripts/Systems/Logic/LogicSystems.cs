@@ -8,7 +8,6 @@ public class LogicSystems : Feature
     {
         Add(new EnergySystem(contexts));
         Add(new DivideSystem(contexts));
-        Add(new LookSystem(contexts));
         Add(new TurnSystem(contexts));
         Add(new MoveSystem(contexts));
         Add(new SynthSystem(contexts));

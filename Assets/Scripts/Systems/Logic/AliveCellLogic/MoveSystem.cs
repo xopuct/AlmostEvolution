@@ -18,9 +18,10 @@ public class MoveSystem : IExecuteSystem
     {
         foreach (var e in _group.GetEntities())
         {
-            if (e.isCorpse || (e.cell.CurrentGene != 9 && e.cell.CurrentGene != 8))
+            if (e.isCorpse || (e.cell.CurrentGene != 9 && e.cell.CurrentGene != 8 && e.cell.CurrentGene != 0))
                 continue;
             var move = e.cell.CurrentGene == 9;
+            var eat = move || e.cell.CurrentGene == 8;
             var obstacle = SensorHelper.GetEntityInEyeLook(e);
             var targetPos = e.position + e.sensor.sensor;
             targetPos.x = (int)Mathf.Repeat(targetPos.x, context.fieldWidth);
@@ -39,13 +40,12 @@ public class MoveSystem : IExecuteSystem
                 //    return;
                 //}
                 //else
-                if (CellHelper.IsCell(obstacle))     // бот
+                if (CellHelper.IsCell(obstacle))
                 {
                     var targetCalories = obstacle.cell.energy;
-
+                    int newEnergy = e.cell.energy + targetCalories;
                     if (obstacle.isCorpse)
                     {
-                        e.ReplaceEnergy(e.cell.energy + targetCalories);
                         e.ReplaceController(e.cell.controller + 3);
                     }
                     else
@@ -53,17 +53,19 @@ public class MoveSystem : IExecuteSystem
                         if (CellHelper.CheckRelations(e, obstacle))
                         {
                             e.ReplaceController(e.cell.controller + 4);
-                            e.ReplaceEnergy(e.cell.energy + targetCalories / 2);
+                            newEnergy = e.cell.energy + targetCalories / 2;
                         }
                         else
                         {
                             e.ReplaceController(e.cell.controller + 5);
-                            e.ReplaceEnergy(e.cell.energy + targetCalories);
                         }
                     }
-
-                    obstacle.isDestroyed = true;
-                    e.ReplaceColor(e.color.ChangeColor(1, -1, 1));
+                    if (eat)
+                    {
+                        e.ReplaceEnergy(newEnergy);
+                        obstacle.isDestroyed = true;
+                        e.ReplaceColor(e.color.ChangeColor(1, -1, 1));
+                    }
                     if (move)
                         context.Move(e, targetPos);
                 }
